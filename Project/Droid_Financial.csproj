@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Droid_financial</RootNamespace>
+    <AssemblyName>Droid_financial</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>lib\4.0\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.OCR, Version=3.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\Aspose.OCR.3.6.0\lib\net40\Aspose.OCR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms.Ribbon, Version=3.5.8.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\officeribbon.3.5.8.4\lib\net20\System.Windows.Forms.Ribbon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tools4Libraries, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Tools4Libraries.1.0.10\lib\4.0\Tools4Libraries.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controler\ProgramDemo.cs" />
+    <Compile Include="Model\Change.cs" />
+    <Compile Include="Model\ICalendar.cs" />
+    <Compile Include="Model\Refund.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="View\CamGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CamGUI.Designer.cs">
+      <DependentUpon>CamGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DeviseEdition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtDelete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtDelete.Designer.cs">
+      <DependentUpon>MvtDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\PanelGraph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\ToolStripMenuFNC.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\UserDelete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\UserDelete.Designer.cs">
+      <DependentUpon>UserDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Event.Designer.cs">
+      <DependentUpon>Event.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MvtEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtEdit.Designer.cs">
+      <DependentUpon>MvtEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\GUI.Designer.cs">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controler\Interface_fnc.cs" />
+    <Compile Include="Model\Movement.cs" />
+    <Compile Include="Model\ProjectFinancial.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="View\PanelFinance.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\UserEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\UserEdit.Designer.cs">
+      <DependentUpon>UserEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="View\CamGUI.resx">
+      <DependentUpon>CamGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DeviseEdition.resx">
+      <DependentUpon>DeviseEdition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MvtDelete.resx">
+      <DependentUpon>MvtDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UserDelete.resx">
+      <DependentUpon>UserDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Event.resx">
+      <DependentUpon>Event.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MvtEdit.resx">
+      <DependentUpon>MvtEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\GUI.resx">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UserEdit.resx">
+      <DependentUpon>UserEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

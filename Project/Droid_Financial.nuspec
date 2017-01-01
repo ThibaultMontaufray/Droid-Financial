@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Droid_Financial</id>
+    <version>1.0.0</version>
+    <title>Servodroid.financial</title>
+    <authors>Thibault MONTAUFRAY</authors>
+    <owners>Servodroid</owners>
+    <licenseUrl>https://raw.githubusercontent.com/ThibaultMontaufray/Tools4Libraries/master/License</licenseUrl>
+    <projectUrl>https://github.com/ThibaultMontaufray/Manager-Finanial</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ThibaultMontaufray/Tools4Libraries/master/ManagersDevComponents/servodroidIconColor.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Manage your finances</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>Servodroid finances</tags>
+  </metadata>
+  <files>
+    <file src="lib\**\*.dll" target="lib" />
+    <file src="lib\**\*.xml" target="lib" />
+    <file src="lib\**\*.config" target="lib" />
+  </files>
+</package>
