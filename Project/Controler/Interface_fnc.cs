@@ -10,12 +10,15 @@ namespace Droid_financial
     /// <summary>
     /// Interface for Tobi Assistant application : take care, some french word here to allow Tobi to speak with natural langage.
     /// </summary>            
+    public delegate void InterfaceEventHandler();
     public class Interface_fnc : GPInterface
     {
-		#region Attributes
+        #region Attributes
+        public event InterfaceEventHandler SheetDisplayRequested;
+
         private ToolStripMenuFNC _tsm;
 		private Stream _stream;
-        private Panel _sheetFinancial;
+        private Panel _sheet;
 		private bool _openned;
         private PanelFinance _panfin;
         private ProjectFinancial _currentProject;
@@ -24,15 +27,15 @@ namespace Droid_financial
         #endregion
 
         #region Properties
-        public new ToolStripMenuFNC Tsm
+        public ToolStripMenuFNC Tsm
 		{
 			get { return _tsm; }
 			set { _tsm = value as ToolStripMenuFNC; }
 		}
-        public Panel SheetFinancial
+        public Panel Sheet
         {
-            get { return _sheetFinancial; }
-            set { _sheetFinancial = value; }
+            get { return _sheet; }
+            set { _sheet = value; }
         }
 		public override bool Openned
 		{
@@ -246,7 +249,7 @@ namespace Droid_financial
                 _panfin.BackgroundImage = _tsm.Gui.BackgroundImage;
                 _panfin.BackgroundImageLayout = _tsm.Gui.BackgroundImageLayout;
                 _panfin.Text = "Financial";
-                _sheetFinancial.Controls.Add(_panfin);
+                _sheet.Controls.Add(_panfin);
             }
             else _panfin.Invalidate();
         }
@@ -352,6 +355,7 @@ namespace Droid_financial
             DeviseEdition de = new DeviseEdition(this);
             de.ShowDialog();
             Tsm.UpdateProjectDetails(_currentProject);
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchProjectUpdated()
         {
@@ -374,19 +378,23 @@ namespace Droid_financial
             if (dt != DateTime.MinValue) _currentProject.EndDate = dt;
             else _tsm.ProjectEndDate.TextBoxText = _currentProject.EndDate.ToShortDateString();
             dt = DateTime.MinValue;
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchBalance()
         {
             _currentProject.Balance();
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchWinUpdate()
         {
             _panfin.Refresh();
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchSwitchGraph()
         {
             if (_panfin.PanelGraphics.GraphMode == PanelGraph.GRAPHMODE.PIE) _panfin.SetGraphMode(PanelGraph.GRAPHMODE.BAR);
             else _panfin.SetGraphMode(PanelGraph.GRAPHMODE.PIE);
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchNewProject()
         {
@@ -400,6 +408,7 @@ namespace Droid_financial
             _tsm.UpdateProjectDetails(_currentProject);
             _tsm.EnableOptions();
             RefreshPanel();
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchOpenProject()
         {
@@ -409,10 +418,12 @@ namespace Droid_financial
             {
                 OpenProject(ofd.FileName);
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchAddUser()
         {
             EditUser(null);
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchAddMovement()
         {
@@ -422,12 +433,14 @@ namespace Droid_financial
         {
             _viewTable = !_viewTable;
             RefreshPanel();
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchCurrencyModif()
         {
             _currentProject.CurrencyProject = Movement.GetCurrency(_tsm.Currencies.SelectedItem.Text);
             _currentProject.Balance();
             RefreshPanel();
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchValueChangeModif()
         {
@@ -449,6 +462,7 @@ namespace Droid_financial
                 }
                 _currentProject.Balance();
                 RefreshPanel();
+                if (SheetDisplayRequested != null) SheetDisplayRequested();
             }
         }
         private void LaunchChangeModif()
@@ -466,6 +480,7 @@ namespace Droid_financial
                         break;
                     }
                 }
+                if (SheetDisplayRequested != null) SheetDisplayRequested();
             }
         }
         private void LaunchImport()
@@ -477,6 +492,7 @@ namespace Droid_financial
                     _currentProject.Movements.AddRange(Movement.ImportMvt(ofd.FileName));
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchExportXml()
         {
@@ -494,6 +510,7 @@ namespace Droid_financial
                     }
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchExportPdf()
         {
@@ -506,6 +523,7 @@ namespace Droid_financial
                     _currentProject.ExportPDF(sfd.FileName);
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchExportWeb()
         {
@@ -523,6 +541,7 @@ namespace Droid_financial
                     }
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchExportTxt()
         {
@@ -540,6 +559,7 @@ namespace Droid_financial
                     }
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchExportCsv()
         {
@@ -557,6 +577,7 @@ namespace Droid_financial
                     }
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         private void LaunchTakeBill()
         {
@@ -567,6 +588,7 @@ namespace Droid_financial
                     EditMvt(myCamGUi.PicturePath);
                 }
             }
+            if (SheetDisplayRequested != null) SheetDisplayRequested();
         }
         #endregion
 

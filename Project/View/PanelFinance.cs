@@ -801,7 +801,7 @@ namespace Droid_financial
                 row.Cells[ColumnRfdExchangeDone.Index].ToolTipText = "This exchange is completed.";
                 row.Cells[ColumnRfdGift.Index].Value = ResourceIconSet16Default.gift_add;
                 row.Cells[ColumnRfdGift.Index].ToolTipText = "No refund, the receiver make a gift.";
-                row.Cells[ColumnRfdCanceled.Index].Value = ResourceIconSet16Default.exit;
+                row.Cells[ColumnRfdCanceled.Index].Value = ResourceIconSet16Default.door_out;
                 row.Cells[ColumnRfdCanceled.Index].ToolTipText = "This exchange will never be done. \r\nAmount will be paid by other participants.";
                 row.Cells[ColumnRfdStatus.Index].Value = r.CurrentStatus;
                 row.Cells[ColumnRfdId.Index].Value = r.ID;
@@ -927,9 +927,9 @@ namespace Droid_financial
 
         private Image GetCurrencyImage(string cur)
         {
-            if (cur.ToUpper().Equals("EUR")) return ResourceIconSet16Default.Currency_Euro;
-            else if (cur.ToUpper().Equals("USD") || cur.ToUpper().Equals("AUD")) return ResourceIconSet16Default.Currency_Dollar;
-            else if (cur.ToUpper().Equals("GBP")) return ResourceIconSet16Default.Currency_Pound;
+            if (cur.ToUpper().Equals("EUR")) return ResourceIconSet16Default.money_euro;
+            else if (cur.ToUpper().Equals("USD") || cur.ToUpper().Equals("AUD")) return ResourceIconSet16Default.money_dollar;
+            else if (cur.ToUpper().Equals("GBP")) return ResourceIconSet16Default.money_pound;
             else if (cur.ToUpper().Equals("JPY")) return ResourceIconSet16Default.coins;
             else if (cur.ToUpper().Equals("INR")) return ResourceIconSet16Default.coins;
             else return ResourceIconSet16Default.coins;

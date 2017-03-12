@@ -172,7 +172,7 @@ namespace Droid_financial
             this.textBoxTitle.BackColor = System.Drawing.Color.Maroon;
             this.textBoxTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxTitle.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTitle.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxTitle.ForeColor = System.Drawing.Color.White;
             this.textBoxTitle.Location = new System.Drawing.Point(0, 0);
             this.textBoxTitle.Margin = new System.Windows.Forms.Padding(5);

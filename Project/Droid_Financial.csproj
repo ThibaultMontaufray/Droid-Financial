@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>lib\4.0\</OutputPath>
+    <OutputPath>lib\4.5.1\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -62,10 +62,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tools4Libraries, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Tools4Libraries.1.0.10\lib\4.0\Tools4Libraries.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controler\ProgramDemo.cs" />
@@ -82,6 +78,12 @@
     </Compile>
     <Compile Include="View\CamGUI.Designer.cs">
       <DependentUpon>CamGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Demo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Demo.Designer.cs">
+      <DependentUpon>Demo.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DeviseEdition.cs">
       <SubType>Form</SubType>
@@ -182,6 +184,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools4Libraries\Tools4Libraries.csproj">
+      <Project>{aad2b1be-9b2d-455d-8dd4-64e4e84dd985}</Project>
+      <Name>Tools4Libraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

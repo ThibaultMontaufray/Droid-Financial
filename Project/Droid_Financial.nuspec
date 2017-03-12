@@ -7,10 +7,10 @@
     <authors>Thibault MONTAUFRAY</authors>
     <owners>Servodroid</owners>
     <licenseUrl>https://raw.githubusercontent.com/ThibaultMontaufray/Tools4Libraries/master/License</licenseUrl>
-    <projectUrl>https://github.com/ThibaultMontaufray/Manager-Finanial</projectUrl>
+    <projectUrl>https://github.com/ThibaultMontaufray/Droid_Finanial</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/ThibaultMontaufray/Tools4Libraries/master/ManagersDevComponents/servodroidIconColor.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Manage your finances</description>
+    <description>Manage a financial project</description>
     <copyright>Copyright 2016</copyright>
     <tags>Servodroid finances</tags>
   </metadata>

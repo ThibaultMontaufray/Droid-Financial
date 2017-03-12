@@ -122,7 +122,7 @@ namespace Droid_financial
             }
             catch (Exception exp4200)
             {
-                Log.write("[ CRT : 4200 ] Cannot open financial menu.\n" + exp4200.Message);
+                Log.Write("[ CRT : 4200 ] Cannot open financial menu.\n" + exp4200.Message);
                 //this.Dispose();
             }
         }
