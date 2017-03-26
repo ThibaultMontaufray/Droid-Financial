@@ -36,7 +36,7 @@ namespace Droid_financial
         {
 
         }
-        public ICalendar(ProjectFinancial pf)
+        public ICalendar(FinancialActivity pf)
         {
             this.Text = pf.Name;
             this.BeginDate = pf.StartDate;

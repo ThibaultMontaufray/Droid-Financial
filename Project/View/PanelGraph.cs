@@ -23,7 +23,7 @@ namespace Droid_financial
         #region Structure
         public struct VAL
         {
-            public float Val;
+            public double Val;
             public string Name;
         };
         #endregion
@@ -34,7 +34,7 @@ namespace Droid_financial
         private int _colR;
         private int _colG;
         private int _colB;
-        private float _sum;
+        private double _sum;
         #endregion
 
         #region Properties
@@ -66,7 +66,7 @@ namespace Droid_financial
         #endregion
 
         #region Methods public
-        public void SetValues(List<string> lstStr, List<float> lstVal, float sum)
+        public void SetValues(List<string> lstStr, List<double> lstVal, double sum)
         {
             _sum = sum;
             if (lstStr.Count == lstVal.Count)

@@ -1,7 +1,7 @@
 ﻿using Tools4Libraries;
 namespace Droid_financial
 {
-    partial class MvtEdit
+    partial class ExpsEdit
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -29,7 +29,7 @@ namespace Droid_financial
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MvtEdit));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExpsEdit));
             this.labelExpense = new System.Windows.Forms.Label();
             this.textBoxMovementName = new System.Windows.Forms.TextBox();
             this.labelAmount = new System.Windows.Forms.Label();
@@ -487,7 +487,7 @@ namespace Droid_financial
             this.comboBoxParticipantList.TabIndex = 38;
             this.comboBoxParticipantList.ValueSeparator = ", ";
             // 
-            // MvtEdit
+            // ExpsEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -521,7 +521,7 @@ namespace Droid_financial
             this.Controls.Add(this.textBoxMovementName);
             this.Controls.Add(this.labelExpense);
             this.ForeColor = System.Drawing.Color.White;
-            this.Name = "MvtEdit";
+            this.Name = "ExpsEdit";
             this.Text = "Expense";
             this.Controls.SetChildIndex(this.labelExpense, 0);
             this.Controls.SetChildIndex(this.textBoxMovementName, 0);

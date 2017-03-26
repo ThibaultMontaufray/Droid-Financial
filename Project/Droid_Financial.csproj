@@ -49,6 +49,10 @@
       <HintPath>packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Dev\Assistant_booking\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -67,12 +71,29 @@
     <Compile Include="Controler\ProgramDemo.cs" />
     <Compile Include="Model\Change.cs" />
     <Compile Include="Model\ICalendar.cs" />
+    <Compile Include="Model\Movement.cs" />
     <Compile Include="Model\Refund.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="View\View\ViewExpences.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\View\ViewExpences.Designer.cs">
+      <DependentUpon>ViewExpences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\View\ViewGOP.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\View\ViewMovement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\View\ViewRefund.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\View\ViewUser.cs" />
     <Compile Include="View\CamGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,9 +121,7 @@
     <Compile Include="View\ToolStripMenuFNC.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\UserDelete.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\UserDelete.cs" />
     <Compile Include="View\UserDelete.Designer.cs">
       <DependentUpon>UserDelete.cs</DependentUpon>
     </Compile>
@@ -125,22 +144,30 @@
       <DependentUpon>GUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Controler\Interface_fnc.cs" />
-    <Compile Include="Model\Movement.cs" />
-    <Compile Include="Model\ProjectFinancial.cs" />
+    <Compile Include="Model\Expense.cs" />
+    <Compile Include="Model\FinancialActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="View\PanelFinance.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\UserEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\UserEdit.cs" />
     <Compile Include="View\UserEdit.Designer.cs">
       <DependentUpon>UserEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\UserPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="View\UserPanel.cs" />
+    <Compile Include="View\View\ViewMenu.cs">
+      <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="View\View\ViewWelcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\View\ViewWelcome.Designer.cs">
+      <DependentUpon>ViewWelcome.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="View\View\ViewExpences.resx">
+      <DependentUpon>ViewExpences.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\CamGUI.resx">
       <DependentUpon>CamGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +188,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -169,6 +197,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\UserEdit.resx">
       <DependentUpon>UserEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\View\ViewMovement.resx">
+      <DependentUpon>ViewMovement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\View\ViewRefund.resx">
+      <DependentUpon>ViewRefund.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\View\ViewWelcome.resx">
+      <DependentUpon>ViewWelcome.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -182,14 +219,19 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Droid-People\Project\Droid_People.csproj">
+      <Project>{d91dab8b-5727-425a-bb7c-5b76ece077dd}</Project>
+      <Name>Droid_People</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tools4Libraries\Tools4Libraries.csproj">
       <Project>{aad2b1be-9b2d-455d-8dd4-64e4e84dd985}</Project>
       <Name>Tools4Libraries</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShieldTileBg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

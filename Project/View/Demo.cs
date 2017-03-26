@@ -17,7 +17,7 @@ namespace Droid_financial.View
         {
             InitializeComponent();
 
-            _intFnc = new Interface_fnc(new List<string>());
+            _intFnc = new Interface_fnc(string.Empty);
             _intFnc.Sheet.Dock = DockStyle.Fill;
             this.Controls.Add(_intFnc.Sheet);
         }

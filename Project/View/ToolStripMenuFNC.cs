@@ -12,7 +12,7 @@ namespace Droid_financial
     public class ToolStripMenuFNC : RibbonTab
     {
         #region Attribute
-        private ProjectFinancial _currentProjet;
+        private FinancialActivity _currentProjet;
         public event EventHandlerAction ActionAppened;
         private GUI _gui;
         private RibbonButton _rb_openProject;
@@ -29,7 +29,7 @@ namespace Droid_financial
         private RibbonDescriptionMenuItem _detail_export_pdf;
         private RibbonButton _rb_print;
         private RibbonButton _rb_add_user;
-        private RibbonButton _rb_addMvt;
+        private RibbonButton _rb_addExps;
         private RibbonButton _rb_takeBill;
         private RibbonPanel _panelTools;
 
@@ -48,7 +48,7 @@ namespace Droid_financial
         private RibbonButton _rb_menu_tile;
         public RibbonDescriptionMenuItem _detail_gop_rate;
         public RibbonDescriptionMenuItem _detail_user_list;
-        public RibbonDescriptionMenuItem _detail_mvt_list;
+        public RibbonDescriptionMenuItem _detail_exps_list;
         public RibbonDescriptionMenuItem _detail_reconciliation;
         public RibbonDescriptionMenuItem _detail_presentation;
         private RibbonPanel _panelView;
@@ -137,7 +137,7 @@ namespace Droid_financial
             _panelProjectSettings.Enabled = true;
             _rb_switchGraphMode.Enabled = true;
             _detail_gop_rate.Enabled = true;
-            _detail_mvt_list.Enabled = true;
+            _detail_exps_list.Enabled = true;
             _detail_user_list.Enabled = true;
             _detail_reconciliation.Enabled = true;
 
@@ -150,11 +150,11 @@ namespace Droid_financial
             _panelProjectSettings.Enabled = false;
             _rb_switchGraphMode.Enabled = false;
             _detail_gop_rate.Enabled = false;
-            _detail_mvt_list.Enabled = false;
+            _detail_exps_list.Enabled = false;
             _detail_user_list.Enabled = false;
             _detail_reconciliation.Enabled = false;
         }
-        public void UpdateProjectDetails(ProjectFinancial pj)
+        public void UpdateProjectDetails(FinancialActivity pj)
         {
             if (pj != null)
             {
@@ -162,7 +162,7 @@ namespace Droid_financial
                 _rb_cb_change.DropDownItems.Clear();
                 _rb_cb_currency.DropDownItems.Clear();
                 List<string> ls = new List<string>();
-                foreach (Movement item in pj.Movements)
+                foreach (Expense item in pj.ListExpenses)
                 {
                     if (!ls.Contains(item.Currency.ToString())) ls.Add(item.Currency.ToString());
                 }
@@ -204,7 +204,7 @@ namespace Droid_financial
                 _rb_projectEndDate.TextBoxText = pj.EndDate.ToShortDateString();
             }
         }
-        public void LoadChangeValue(float val)
+        public void LoadChangeValue(double val)
         {
             _rb_textbox_change.TextBoxText = val.ToString();
         }
@@ -219,10 +219,10 @@ namespace Droid_financial
             _detail_user_list.Text = "Disable users list                                          ";
             _detail_user_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.participation_rate_checked;
         }
-        public void EnableMvtList()
+        public void EnableExpsList()
         {
-            _detail_mvt_list.Text = "Disable movement list                                       ";
-            _detail_mvt_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_checked;
+            _detail_exps_list.Text = "Disable movement list                                       ";
+            _detail_exps_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_checked;
         }
         public void EnableReconciliation()
         {
@@ -245,10 +245,10 @@ namespace Droid_financial
             _detail_user_list.Text = "Enable users list                                          ";
             _detail_user_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.participation_rate_unchecked;
         }
-        public void DisableMvtList()
+        public void DisableExpsList()
         {
-            _detail_mvt_list.Text = "Enable movement list                                       ";
-            _detail_mvt_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_unchecked;
+            _detail_exps_list.Text = "Enable movement list                                       ";
+            _detail_exps_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_unchecked;
         }
         public void DisableReconciliation()
         {
@@ -356,16 +356,16 @@ namespace Droid_financial
             _rb_takeBill.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.webcam));
             _rb_takeBill.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.webcam));
             
-            _rb_addMvt = new RibbonButton("Add movement");
-            _rb_addMvt.Click += new EventHandler(rb_addevent_Click);
-            _rb_addMvt.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.note_add));
-            _rb_addMvt.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.note_add));
+            _rb_addExps = new RibbonButton("Add movement");
+            _rb_addExps.Click += new EventHandler(rb_addevent_Click);
+            _rb_addExps.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.note_add));
+            _rb_addExps.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.note_add));
 
             _panelTools = new RibbonPanel();
             _panelTools.Text = "Tools";
             _panelTools.Items.Add(_rb_add_user);
             _panelTools.Items.Add(_rb_takeBill);
-            _panelTools.Items.Add(_rb_addMvt);
+            _panelTools.Items.Add(_rb_addExps);
             _panelTools.Items.Add(_rb_balance);
             _panelTools.Items.Add(_rb_export);
             _panelTools.Items.Add(_rb_import);
@@ -427,12 +427,12 @@ namespace Droid_financial
             _detail_gop_rate.MinSizeMode = RibbonElementSizeMode.Large;
             _detail_gop_rate.Click += _detail_gop_rate_Click;
 
-            _detail_mvt_list = new RibbonDescriptionMenuItem();
-            _detail_mvt_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_unchecked;
-            _detail_mvt_list.Text = "Enable movement list                                       ";
-            _detail_mvt_list.Description = "Display the list of all movement with details";
-            _detail_mvt_list.MinSizeMode = RibbonElementSizeMode.Large;
-            _detail_mvt_list.Click += _detail_mvt_list_Click;
+            _detail_exps_list = new RibbonDescriptionMenuItem();
+            _detail_exps_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.table_money_unchecked;
+            _detail_exps_list.Text = "Enable movement list                                       ";
+            _detail_exps_list.Description = "Display the list of all movement with details";
+            _detail_exps_list.MinSizeMode = RibbonElementSizeMode.Large;
+            _detail_exps_list.Click += _detail_exps_list_Click;
 
             _detail_user_list = new RibbonDescriptionMenuItem();
             _detail_user_list.Image = Tools4Libraries.Resources.ResourceIconSet32Default.participation_rate_unchecked;
@@ -457,7 +457,7 @@ namespace Droid_financial
             _rb_menu_tile.DropDownItems.Add(_detail_presentation);
             _rb_menu_tile.DropDownItems.Add(_detail_gop_rate);
             _rb_menu_tile.DropDownItems.Add(_detail_user_list);
-            _rb_menu_tile.DropDownItems.Add(_detail_mvt_list);
+            _rb_menu_tile.DropDownItems.Add(_detail_exps_list);
             _rb_menu_tile.DropDownItems.Add(_detail_reconciliation);
             //_rb_menu_tile.DrawIconsBar = false;
             _rb_menu_tile.TextAlignment = RibbonItem.RibbonItemTextAlignment.Left;
@@ -576,7 +576,7 @@ namespace Droid_financial
         }
         private void rb_addevent_Click(object sender, EventArgs e)
         {
-            _rb_addMvt.Checked = false;
+            _rb_addExps.Checked = false;
             ToolBarEventArgs action = new ToolBarEventArgs("addevent");
             OnAction(action);
         }
@@ -659,10 +659,10 @@ namespace Droid_financial
             ToolBarEventArgs action = new ToolBarEventArgs("winupdate");
             OnAction(action);
         }
-        private void _detail_mvt_list_Click(object sender, EventArgs e)
+        private void _detail_exps_list_Click(object sender, EventArgs e)
         {
-            if (_detail_mvt_list.Text.StartsWith("Disable")) DisableMvtList();
-            else EnableMvtList();
+            if (_detail_exps_list.Text.StartsWith("Disable")) DisableExpsList();
+            else EnableExpsList();
             ToolBarEventArgs action = new ToolBarEventArgs("winupdate");
             OnAction(action);
         }

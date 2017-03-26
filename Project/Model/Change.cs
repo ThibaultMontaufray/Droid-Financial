@@ -11,11 +11,11 @@ namespace Droid_financial
         #region Attribute
         private string _currency1;
         private string _currency2;
-        private float _rate;        
+        private double _rate;        
         #endregion
 
         #region Properties
-        public float Rate
+        public double Rate
         {
             get { return _rate; }
             set { _rate = value; }
@@ -49,7 +49,7 @@ namespace Droid_financial
                         {
                             case "cur1": this.Currency1 = node.Value; break;
                             case "cur2": this.Currency2 = node.Value; break;
-                            case "rate": this._rate = float.Parse(node.Value); break;
+                            case "rate": this._rate = double.Parse(node.Value); break;
                         }
                     }
                     else
@@ -58,7 +58,7 @@ namespace Droid_financial
                         {
                             case "cur1": this.Currency2 = node.Value; break;
                             case "cur2": this.Currency1 = node.Value; break;
-                            case "rate": this._rate = (1 / float.Parse(node.Value)); break;
+                            case "rate": this._rate = (1 / double.Parse(node.Value)); break;
                         }
                     }
                 }
@@ -67,7 +67,7 @@ namespace Droid_financial
                 }
             }
         }
-        public Change(string cur1, string cur2, float taux)
+        public Change(string cur1, string cur2, double taux)
         {
             this._currency1 = cur1;
             this._currency2 = cur2;
@@ -76,11 +76,11 @@ namespace Droid_financial
         #endregion
 
         #region Methods public
-        public float ConvertToCur2(float val)
+        public double ConvertToCur2(double val)
         {
             return val * Rate;
         }
-        public float ConvertToCur1(float val)
+        public double ConvertToCur1(double val)
         {
             return val / Rate;
         }

@@ -13,33 +13,33 @@ using System.Windows.Forms;
 
 namespace Droid_financial
 {
-    public partial class MvtEdit : window_popup
+    public partial class ExpsEdit : window_popup
     {
         #region Attribute
         private Interface_fnc _intFnc;
-        private Movement _mvtCurrent;
-        private Movement _mvtNew;
+        private Expense _expsCurrent;
+        private Expense _expsNew;
         private Regex _rexFloat = new Regex(@"^[0-9]*(?:\,[0-9]*)?$");
         private bool _billFullScreen = false;
         private Form _fullScreenForm;
         #endregion
 
         #region Properties
-        public Movement Movement
+        public Expense Movement
         {
-            get { return _mvtCurrent; }
-            set { _mvtCurrent = value; }
+            get { return _expsCurrent; }
+            set { _expsCurrent = value; }
         }
         #endregion
 
         #region Constructor
-        public MvtEdit(Interface_fnc intFnc, int? mvtId)
+        public ExpsEdit(Interface_fnc intFnc, int? expsId)
         {
             _intFnc = intFnc;
             InitializeComponent();
-            LoadPrj(mvtId);
-            _mvtNew = new Movement();
-            if (mvtId != null)
+            LoadPrj(expsId);
+            _expsNew = new Expense();
+            if (expsId != null)
             {
                 textBoxMovementName.Visible = false;
                 buttonValidateMovement.Text = "Update movement";
@@ -47,20 +47,20 @@ namespace Droid_financial
             }
             else
             {
-                _mvtCurrent = _mvtNew;
+                _expsCurrent = _expsNew;
                 checkBoxNewMovement.Checked = true;
             }
             this.comboBoxMovement.SelectedValueChanged += new System.EventHandler(this.comboBoxMovement_SelectionChanged);
         }
-        public MvtEdit(Interface_fnc intFnc, string picPath)
+        public ExpsEdit(Interface_fnc intFnc, string picPath)
         {
             _intFnc = intFnc;
             InitializeComponent();
             checkBoxNewMovement.Checked = true;
             textBoxBillPath.Text = picPath;
-            _mvtNew = new Movement();
+            _expsNew = new Expense();
             LoadPrj(null);
-            _mvtCurrent = _mvtNew;
+            _expsCurrent = _expsNew;
             if (!string.IsNullOrEmpty(picPath)) LoadPicture();
             this.comboBoxMovement.SelectedValueChanged += new System.EventHandler(this.comboBoxMovement_SelectionChanged);
         }
@@ -79,7 +79,7 @@ namespace Droid_financial
                 pictureBox.Invalidate();
             }
         }
-        private void LoadPrj(int? mvtId)
+        private void LoadPrj(int? expsId)
         {
             comboBoxCurrency.Items.Add("AUD");
             comboBoxCurrency.Items.Add("EUR");
@@ -98,43 +98,43 @@ namespace Droid_financial
                 comboBoxWho.Items.Add((usr.Firstname + " " + usr.Name).Trim());
                 comboBoxParticipantList.Items.Add((usr.Firstname + " " + usr.Name).Trim());
 	        }
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                comboBoxMovement.Items.Add(mvt.Name);
-                if (mvtId != null && mvt.ID.Equals(mvtId)) _mvtCurrent = mvt;
+                comboBoxMovement.Items.Add(exps.Name);
+                if (expsId != null && exps.Id.Equals(expsId)) _expsCurrent = exps;
             }
             if (comboBoxMovement.Items.Count > 0) comboBoxMovement.SelectedItem = comboBoxMovement.Items[0];
-            if (mvtId == null)
+            if (expsId == null)
             {
-                _mvtCurrent = new Movement();
-                _mvtNew = new Movement();
+                _expsCurrent = new Expense();
+                _expsNew = new Expense();
                 checkBoxNewMovement.Checked = true;
-                LoadMovement(_mvtNew);
+                LoadExpense(_expsNew);
             }
-            else LoadMovement(_mvtCurrent);
+            else LoadExpense(_expsCurrent);
             comboBoxMovement.Enabled = !checkBoxNewMovement.Checked;
         }
-        private void LoadMovement(Movement mvt)
+        private void LoadExpense(Expense exps)
         {
-            if (mvt != null)
+            if (exps != null)
             {
-                checkBoxAllRegardingParticipants.Checked = mvt.AllParticipant;
-                checkBoxIsPartial.Checked = mvt.IsPartial;
-                if (mvt.StartDate > dateTimePickerStartDate.MinDate && mvt.StartDate < dateTimePickerStartDate.MaxDate) dateTimePickerStartDate.Value = mvt.StartDate;
+                checkBoxAllRegardingParticipants.Checked = exps.AllParticipant;
+                checkBoxIsPartial.Checked = exps.IsPartial;
+                if (exps.StartDate > dateTimePickerStartDate.MinDate && exps.StartDate < dateTimePickerStartDate.MaxDate) dateTimePickerStartDate.Value = exps.StartDate;
                 else dateTimePickerStartDate.Value = DateTime.Now;
 
-                if (mvt.EndDate > dateTimePickerEndDate.MinDate && mvt.EndDate < dateTimePickerEndDate.MaxDate) dateTimePickerEndDate.Value = mvt.EndDate;
+                if (exps.EndDate > dateTimePickerEndDate.MinDate && exps.EndDate < dateTimePickerEndDate.MaxDate) dateTimePickerEndDate.Value = exps.EndDate;
                 else dateTimePickerEndDate.Value = DateTime.Now;
 
-                if (!string.IsNullOrEmpty(mvt.Name))
+                if (!string.IsNullOrEmpty(exps.Name))
                 {
-                    comboBoxMovement.SelectedItem = comboBoxMovement.Items.IndexOf(mvt.Name) == -1 ? null : comboBoxMovement.Items[comboBoxMovement.Items.IndexOf(mvt.Name)];
+                    comboBoxMovement.SelectedItem = comboBoxMovement.Items.IndexOf(exps.Name) == -1 ? null : comboBoxMovement.Items[comboBoxMovement.Items.IndexOf(exps.Name)];
                 }
-                comboBoxCurrency.SelectedItem = (string.IsNullOrEmpty(mvt.Currency) || comboBoxCurrency.Items.IndexOf(mvt.Currency) == -1) ? comboBoxCurrency.Items[0] : comboBoxCurrency.Items[comboBoxCurrency.Items.IndexOf(mvt.Currency)];
-                textBoxDescription.Text = mvt.Description;
-                textBoxAmount.Text = mvt.Amount.ToString();
-                textBoxMovementName.Text = mvt.Name;
-                textBoxBillPath.Text = mvt.BillPath;
+                comboBoxCurrency.SelectedItem = (string.IsNullOrEmpty(exps.Currency) || comboBoxCurrency.Items.IndexOf(exps.Currency) == -1) ? comboBoxCurrency.Items[0] : comboBoxCurrency.Items[comboBoxCurrency.Items.IndexOf(exps.Currency)];
+                textBoxDescription.Text = exps.Description;
+                textBoxAmount.Text = exps.Amount.ToString();
+                textBoxMovementName.Text = exps.Name;
+                textBoxBillPath.Text = exps.BillPath;
                 LoadPicture();
                 User userTmp;
                 List<string> ls = new List<string>();
@@ -142,7 +142,7 @@ namespace Droid_financial
                 foreach (string userStr in ls)
                 {
                     userTmp = _intFnc.CurrentProject.Users.Find(x => (x.Firstname + " " + x.Name).Trim().Equals(userStr.Trim()));
-                    if (userTmp != null && mvt.UserIdParticipant.Contains(userTmp.ID))
+                    if (userTmp != null && exps.Movements.Where(p => p.UserId.Equals(userTmp.ID)).Count() > 0)
                     {
                         if (comboBoxParticipantList.Items.IndexOf(userStr.Trim()) != -1) comboBoxParticipantList.SetItemChecked(comboBoxParticipantList.Items.IndexOf(userStr.Trim()), true);
                     }
@@ -151,139 +151,139 @@ namespace Droid_financial
                 foreach (string userStr in ls)
                 {
                     userTmp = _intFnc.CurrentProject.Users.Find(x => (x.Firstname + " " + x.Name).Trim().Equals(userStr.Trim()));
-                    if (userTmp != null && mvt.UserId.Contains(userTmp.ID))
-                    {
-                        if (comboBoxWho.Items.IndexOf(userStr.Trim()) != -1) comboBoxWho.SetItemChecked(comboBoxWho.Items.IndexOf(userStr.Trim()), true);
-                    }
+                    //if (userTmp != null && exps. UserId.Contains(userTmp.ID))
+                    //{
+                    //    if (comboBoxWho.Items.IndexOf(userStr.Trim()) != -1) comboBoxWho.SetItemChecked(comboBoxWho.Items.IndexOf(userStr.Trim()), true);
+                    //}
                 }
-                switch (mvt.Gop)
+                switch (exps.Gop)
                 {
-                    case Movement.GOP.COMODITIES: radioButtonComodities.Checked = true; break;
-                    case Movement.GOP.ACTIVITIES: radioButtonActivities.Checked = true; break;
-                    case Movement.GOP.FOOD: radioButtonFood.Checked = true; break;
-                    case Movement.GOP.OTHER: radioButtonOther.Checked = true; break;
-                    case Movement.GOP.TRANSPORT: radioButtonTransport.Checked = true; break;
-                    case Movement.GOP.CLOTHES: radioButtonClothe.Checked = true; break;
-                    case Movement.GOP.LOGEMENT: radioButtonLogement.Checked = true; break;
-                    case Movement.GOP.ABONMENT: radioButtonAbonmnent.Checked = true; break;
-                    case Movement.GOP.LOANS: radioButtonLoan.Checked = true; break;
+                    case Expense.GOP.COMODITIES: radioButtonComodities.Checked = true; break;
+                    case Expense.GOP.ACTIVITIES: radioButtonActivities.Checked = true; break;
+                    case Expense.GOP.FOOD: radioButtonFood.Checked = true; break;
+                    case Expense.GOP.OTHER: radioButtonOther.Checked = true; break;
+                    case Expense.GOP.TRANSPORT: radioButtonTransport.Checked = true; break;
+                    case Expense.GOP.CLOTHES: radioButtonClothe.Checked = true; break;
+                    case Expense.GOP.LOGEMENT: radioButtonLogement.Checked = true; break;
+                    case Expense.GOP.ABONMENT: radioButtonAbonmnent.Checked = true; break;
+                    case Expense.GOP.LOANS: radioButtonLoan.Checked = true; break;
                 }
                 if (!checkBoxNewMovement.Checked)
                 {
                     foreach (var item in comboBoxMovement.Items)
                     {
-                        if (item.ToString().Equals(mvt.Name))
+                        if (item.ToString().Equals(exps.Name))
                         {
                             comboBoxMovement.SelectedItem = item;
                             break;
                         }
                     }
                 }
-                else textBoxMovementName.Text = mvt.Name;
+                else textBoxMovementName.Text = exps.Name;
             }
         }
-        private void SaveMovement(bool newMvt)
+        private void SaveExpense(bool newExps)
         {
-            if (_mvtCurrent != null)
+            if (_expsCurrent != null)
             {
-                if (newMvt)
+                if (newExps)
                 {
-                    UpdateAmount(_mvtNew);
-                    _mvtNew.BillPath = textBoxBillPath.Text;
-                    _mvtNew.Currency = comboBoxCurrency.Text;
-                    _mvtNew.Name = textBoxMovementName.Text;
-                    _mvtNew.Description = textBoxDescription.Text;
-                    _mvtNew.AllParticipant = checkBoxAllRegardingParticipants.Checked;
+                    UpdateAmount(_expsNew);
+                    _expsNew.BillPath = textBoxBillPath.Text;
+                    _expsNew.Currency = comboBoxCurrency.Text;
+                    _expsNew.Name = textBoxMovementName.Text;
+                    _expsNew.Description = textBoxDescription.Text;
+                    _expsNew.AllParticipant = checkBoxAllRegardingParticipants.Checked;
 
-                    _mvtNew.UserId.Clear();
-                    foreach (string item in comboBoxWho.Text.Split(','))
-                        if (!string.IsNullOrEmpty(item))
-                        {
-                            User u = _intFnc.CurrentProject.GetUser(item.Trim());
-                            if (u != null) _mvtNew.UserId.Add(u.ID);
-                        }
-                    _mvtNew.UserIdParticipant.Clear();
+                    //_expsNew.UserId.Clear();
+                    //foreach (string item in comboBoxWho.Text.Split(','))
+                    //    if (!string.IsNullOrEmpty(item))
+                    //    {
+                    //        User u = _intFnc.CurrentProject.GetUser(item.Trim());
+                    //        if (u != null) _expsNew.UserId.Add(u.ID);
+                    //    }
+                    _expsNew.Movements.Clear();
                     foreach (string item in comboBoxParticipantList.Text.Split(','))
                         if (!string.IsNullOrEmpty(item))
                         {
                             User u = _intFnc.CurrentProject.GetUser(item.Trim());
-                            if (u != null) _mvtNew.UserIdParticipant.Add(u.ID);
+                            if (u != null) _expsNew.Movements.Add(new Movement() { UserId = u.ID, Amount = 0, Date = DateTime.Now });
                         }
 
-                    _mvtNew.StartDate = dateTimePickerStartDate.Value;
-                    _mvtNew.EndDate = dateTimePickerEndDate.Value;
+                    _expsNew.StartDate = dateTimePickerStartDate.Value;
+                    _expsNew.EndDate = dateTimePickerEndDate.Value;
 
-                    if (radioButtonActivities.Checked) _mvtNew.Gop = Movement.GOP.ACTIVITIES;
-                    else if (radioButtonComodities.Checked) _mvtNew.Gop = Movement.GOP.COMODITIES;
-                    else if (radioButtonFood.Checked) _mvtNew.Gop = Movement.GOP.FOOD;
-                    else if (radioButtonOther.Checked) _mvtNew.Gop = Movement.GOP.OTHER;
-                    else if (radioButtonTransport.Checked) _mvtNew.Gop = Movement.GOP.TRANSPORT;
-                    else if (radioButtonAbonmnent.Checked) _mvtNew.Gop = Movement.GOP.ABONMENT;
-                    else if (radioButtonLogement.Checked) _mvtNew.Gop = Movement.GOP.LOGEMENT;
-                    else if (radioButtonLoan.Checked) _mvtNew.Gop = Movement.GOP.LOANS;
-                    else if (radioButtonClothe.Checked) _mvtNew.Gop = Movement.GOP.CLOTHES;
+                    if (radioButtonActivities.Checked) _expsNew.Gop = Expense.GOP.ACTIVITIES;
+                    else if (radioButtonComodities.Checked) _expsNew.Gop = Expense.GOP.COMODITIES;
+                    else if (radioButtonFood.Checked) _expsNew.Gop = Expense.GOP.FOOD;
+                    else if (radioButtonOther.Checked) _expsNew.Gop = Expense.GOP.OTHER;
+                    else if (radioButtonTransport.Checked) _expsNew.Gop = Expense.GOP.TRANSPORT;
+                    else if (radioButtonAbonmnent.Checked) _expsNew.Gop = Expense.GOP.ABONMENT;
+                    else if (radioButtonLogement.Checked) _expsNew.Gop = Expense.GOP.LOGEMENT;
+                    else if (radioButtonLoan.Checked) _expsNew.Gop = Expense.GOP.LOANS;
+                    else if (radioButtonClothe.Checked) _expsNew.Gop = Expense.GOP.CLOTHES;
                 }
                 else
                 {
-                    UpdateAmount(_mvtCurrent);
-                    _mvtCurrent.BillPath = textBoxBillPath.Text;
-                    _mvtCurrent.Currency = comboBoxCurrency.Text;
-                    _mvtCurrent.Name = comboBoxMovement.Text;
-                    _mvtCurrent.Description = textBoxDescription.Text;
-                    _mvtCurrent.StartDate = dateTimePickerStartDate.Value;
-                    _mvtCurrent.EndDate = dateTimePickerEndDate.Value;
-                    _mvtCurrent.IsPartial = checkBoxIsPartial.Checked;
-                    _mvtCurrent.AllParticipant = checkBoxAllRegardingParticipants.Checked;
+                    UpdateAmount(_expsCurrent);
+                    _expsCurrent.BillPath = textBoxBillPath.Text;
+                    _expsCurrent.Currency = comboBoxCurrency.Text;
+                    _expsCurrent.Name = comboBoxMovement.Text;
+                    _expsCurrent.Description = textBoxDescription.Text;
+                    _expsCurrent.StartDate = dateTimePickerStartDate.Value;
+                    _expsCurrent.EndDate = dateTimePickerEndDate.Value;
+                    _expsCurrent.IsPartial = checkBoxIsPartial.Checked;
+                    _expsCurrent.AllParticipant = checkBoxAllRegardingParticipants.Checked;
 
-                    _mvtCurrent.UserId.Clear();
-                    foreach (string item in comboBoxWho.Text.Split(','))
-                        if (!string.IsNullOrEmpty(item))
-                        {
-                            User u = _intFnc.CurrentProject.GetUser(item.Trim());
-                            if (u != null) _mvtCurrent.UserId.Add(u.ID);
-                        }
-                    _mvtCurrent.UserIdParticipant.Clear();
+                    //_expsCurrent.UserId.Clear();
+                    //foreach (string item in comboBoxWho.Text.Split(','))
+                    //    if (!string.IsNullOrEmpty(item))
+                    //    {
+                    //        User u = _intFnc.CurrentProject.GetUser(item.Trim());
+                    //        if (u != null) _expsCurrent.UserId.Add(u.ID);
+                    //    }
+                    _expsCurrent.Movements.Clear();
                     foreach (string item in comboBoxParticipantList.Text.Split(','))
                         if (!string.IsNullOrEmpty(item))
                         {
                             User u = _intFnc.CurrentProject.GetUser(item.Trim());
-                            if (u != null) _mvtCurrent.UserIdParticipant.Add(u.ID);
+                            if (u != null) _expsCurrent.Movements.Add(new Movement() { UserId = u.ID, Amount = 0, Date = DateTime.Now });
                         }
                     
-                    if (radioButtonActivities.Checked) _mvtCurrent.Gop = Movement.GOP.ACTIVITIES;
-                    else if (radioButtonComodities.Checked) _mvtCurrent.Gop = Movement.GOP.COMODITIES;
-                    else if (radioButtonFood.Checked) _mvtCurrent.Gop = Movement.GOP.FOOD;
-                    else if (radioButtonOther.Checked) _mvtCurrent.Gop = Movement.GOP.OTHER;
-                    else if (radioButtonTransport.Checked) _mvtCurrent.Gop = Movement.GOP.TRANSPORT;
-                    else if (radioButtonAbonmnent.Checked) _mvtCurrent.Gop = Movement.GOP.ABONMENT;
-                    else if (radioButtonLogement.Checked) _mvtCurrent.Gop = Movement.GOP.LOGEMENT;
-                    else if (radioButtonLoan.Checked) _mvtCurrent.Gop = Movement.GOP.LOANS;
-                    else if (radioButtonClothe.Checked) _mvtCurrent.Gop = Movement.GOP.CLOTHES;
+                    if (radioButtonActivities.Checked) _expsCurrent.Gop = Expense.GOP.ACTIVITIES;
+                    else if (radioButtonComodities.Checked) _expsCurrent.Gop = Expense.GOP.COMODITIES;
+                    else if (radioButtonFood.Checked) _expsCurrent.Gop = Expense.GOP.FOOD;
+                    else if (radioButtonOther.Checked) _expsCurrent.Gop = Expense.GOP.OTHER;
+                    else if (radioButtonTransport.Checked) _expsCurrent.Gop = Expense.GOP.TRANSPORT;
+                    else if (radioButtonAbonmnent.Checked) _expsCurrent.Gop = Expense.GOP.ABONMENT;
+                    else if (radioButtonLogement.Checked) _expsCurrent.Gop = Expense.GOP.LOGEMENT;
+                    else if (radioButtonLoan.Checked) _expsCurrent.Gop = Expense.GOP.LOANS;
+                    else if (radioButtonClothe.Checked) _expsCurrent.Gop = Expense.GOP.CLOTHES;
                 }
             }
         }
-        private Movement FindMovement()
+        private Expense FindExpense()
         {
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                if (textBoxMovementName.Text.Equals(mvt.Name))
+                if (textBoxMovementName.Text.Equals(exps.Name))
                 {
-                    return mvt;
+                    return exps;
                 }
             }
-            if (_intFnc.CurrentProject.Movements.Count > 0) return _intFnc.CurrentProject.Movements[0];
+            if (_intFnc.CurrentProject.ListExpenses.Count > 0) return _intFnc.CurrentProject.ListExpenses[0];
             return null;
         }
-        private void UpdateAmount(Movement mvt)
+        private void UpdateAmount(Expense exps)
         {
-            if (mvt != null) 
+            if (exps != null) 
             {
                 textBoxAmount.Text = textBoxAmount.Text.Replace('.', ',');
                 if (_rexFloat.IsMatch(textBoxAmount.Text))
                 {
                     try
                     {
-                        mvt.Amount = float.Parse(textBoxAmount.Text);
+                        exps.Amount = float.Parse(textBoxAmount.Text);
                     }
                     catch (FormatException fexp)
                     {
@@ -294,7 +294,7 @@ namespace Droid_financial
                         Console.WriteLine(exp.Message);
                     }
                 }
-                else textBoxAmount.Text = mvt.Amount.ToString();
+                else textBoxAmount.Text = exps.Amount.ToString();
             }
         }
         private void BrowseImage()
@@ -337,8 +337,8 @@ namespace Droid_financial
         #region Event
         private void buttonValidateMovement_Click(object sender, EventArgs e)
         {
-            SaveMovement(checkBoxNewMovement.Checked);
-            if (checkBoxNewMovement.Checked) _mvtCurrent = _mvtNew;
+            SaveExpense(checkBoxNewMovement.Checked);
+            if (checkBoxNewMovement.Checked) _expsCurrent = _expsNew;
             this.Close();
         }
         private void buttonCancel_Click(object sender, System.EventArgs e)
@@ -347,7 +347,7 @@ namespace Droid_financial
         }
         private void textBoxAmount_TextChanged(object sender, EventArgs e)
         {
-            UpdateAmount(checkBoxNewMovement.Checked ? _mvtNew : _mvtCurrent);
+            UpdateAmount(checkBoxNewMovement.Checked ? _expsNew : _expsCurrent);
         }
         private void checkBoxNewMovement_CheckedChanged(object sender, EventArgs e)
         {
@@ -356,20 +356,20 @@ namespace Droid_financial
             if (!checkBoxNewMovement.Checked)
             {
                 buttonValidateMovement.Text = "Save";
-                SaveMovement(true);
-                if (_mvtCurrent != null) LoadMovement(_mvtCurrent);
-                else LoadMovement(FindMovement());
+                SaveExpense(true);
+                if (_expsCurrent != null) LoadExpense(_expsCurrent);
+                else LoadExpense(FindExpense());
             }
             else
             {
                 buttonValidateMovement.Text = "Create";
-                SaveMovement(false);
-                LoadMovement(_mvtNew);
+                SaveExpense(false);
+                LoadExpense(_expsNew);
             }
         }
         private void comboBoxMovement_SelectionChanged(object sender, EventArgs e)
         {
-            LoadMovement(FindMovement());
+            LoadExpense(FindExpense());
         }
         private void buttonCamera_Click(object sender, EventArgs e)
         {

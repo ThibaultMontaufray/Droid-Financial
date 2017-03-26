@@ -187,11 +187,11 @@ namespace Droid_financial
         {
             if (ControlStupidUser())
             {
-                Change chg = new Change(textBoxName.Text, comboBoxDevise.Text, float.Parse(textBoxValue.Text));
+                Change chg = new Change(textBoxName.Text, comboBoxDevise.Text, double.Parse(textBoxValue.Text));
                 if (_ifn.CurrentProject.Changes.Contains(chg)) _ifn.CurrentProject.Changes.Remove(chg);
                 _ifn.CurrentProject.Changes.Add(chg);
 
-                Change chg_revert = new Change(comboBoxDevise.Text, textBoxName.Text, 1/float.Parse(textBoxValue.Text));
+                Change chg_revert = new Change(comboBoxDevise.Text, textBoxName.Text, 1/ double.Parse(textBoxValue.Text));
                 if (_ifn.CurrentProject.Changes.Contains(chg_revert)) _ifn.CurrentProject.Changes.Remove(chg_revert);
                 _ifn.CurrentProject.Changes.Add(chg_revert);
 

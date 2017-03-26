@@ -15,13 +15,13 @@ namespace Droid_financial
         private string _firstname;
         private Color _color;
         private int _avatarIndex;
-        private float _solde;
-        private float _soldeSimulation;
-        private float _sumExpances;
+        private double _solde;
+        private double _soldeSimulation;
+        private double _sumExpances;
         private string _currency;
-        private int _id;
+        private string _id;
         private List<ICalendar> _calendars;
-        private List<Movement> _movements;
+        private List<Expense> _movements;
         #endregion
 
         #region Properties
@@ -30,7 +30,7 @@ namespace Droid_financial
             get { return _calendars; }
             set { _calendars = value; }
         }
-        public float SumExpances
+        public double SumExpances
         {
             get { return _sumExpances; }
             set { _sumExpances = value; }
@@ -40,12 +40,12 @@ namespace Droid_financial
             get { return _currency; }
             set { _currency = value; }
         }
-        public float Solde
+        public double Solde
         {
             get { return _solde; }
             set { _solde = value; }
         }
-        public float SoldeSimulation
+        public double SoldeSimulation
         {
             get { return _soldeSimulation; }
             set { _soldeSimulation = value; }
@@ -70,12 +70,12 @@ namespace Droid_financial
             get { return _name; }
             set { _name = value; }
         }
-        public int ID
+        public string ID
         {
             get { return _id; }
             set { _id = value; }
         }
-        public List<Movement> Movements
+        public List<Expense> Movements
         {
             get { return _movements; }
             set { _movements = value; }
@@ -85,14 +85,14 @@ namespace Droid_financial
         #region Constructor
         public User()
         {
-            _movements = new List<Movement>();
-            _id = DateTime.Now.GetHashCode();
+            _movements = new List<Expense>();
+            _id = DateTime.Now.GetHashCode().ToString();
             _calendars = new List<ICalendar>();
         }
         public User(XmlReader node)
         {
             string[] tab;
-            _movements = new List<Movement>();
+            _movements = new List<Expense>();
             _calendars = new List<ICalendar>();
             for (int i = 0; i < node.AttributeCount; i++)
             {
@@ -104,8 +104,8 @@ namespace Droid_financial
                         case "name": this.Name = node.Value; break;
                         case "firstname": this.Firstname = node.Value; break;
                         case "avatar": this.AvatarIndex = int.Parse(node.Value); break;
-                        case "userid": this.ID = int.Parse(node.Value); break;
-                        case "taux": this.Solde = float.Parse(node.Value); break;
+                        case "userid": this.ID = node.Value; break;
+                        case "taux": this.Solde = double.Parse(node.Value); break;
                         case "color":
                             tab = node.Value.Split('|');
                             if (tab.Length == 5) this.Color = Color.FromArgb(int.Parse(tab[0]), int.Parse(tab[1]), int.Parse(tab[2]), int.Parse(tab[3]));
@@ -136,8 +136,8 @@ namespace Droid_financial
         }
         public User(string name, string firstname, Color col, int avatarIndex, List<ICalendar> lstPP)
         {
-            _movements = new List<Movement>();
-            _id = DateTime.Now.GetHashCode();
+            _movements = new List<Expense>();
+            _id = DateTime.Now.GetHashCode().ToString();
             this.Name = name;
             this.Firstname = firstname;
             this.Color = col;
@@ -147,11 +147,11 @@ namespace Droid_financial
         #endregion
 
         #region Methods static
-        public static User GetUser(List<User> lstUsr, int index)
+        public static User GetUser(List<User> lstUsr, string index)
         {
             foreach (User usr in lstUsr)
             {
-                if (usr.ID == index) return usr;
+                if (usr.ID.Equals(index)) return usr;
             }
             return new User();
         }

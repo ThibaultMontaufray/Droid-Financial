@@ -10,44 +10,44 @@ using System.Windows.Forms;
 
 namespace Droid_financial
 {
-    public partial class MvtDelete : window_popup
+    public partial class ExpsDelete : window_popup
     {
         #region Attribute
-        private Movement _currentMovement;
+        private Expense _currentMovement;
         private Interface_fnc _intFnc;
         #endregion
 
         #region Properties
-        public Movement Movement
+        public Expense Movement
         {
             get { return _currentMovement; }
         }
         #endregion
 
         #region Constructor
-        public MvtDelete(Interface_fnc intfnc)
+        public ExpsDelete(Interface_fnc intfnc)
         {
             _intFnc = intfnc;
-            _currentMovement = new Movement();
+            _currentMovement = new Expense();
             InitializeComponent();
             LoadMovementList();
             comboBoxListMovements.SelectedItem = comboBoxListMovements.Items[0];
         }
-        public MvtDelete(Interface_fnc intfnc, Movement mvt)
+        public ExpsDelete(Interface_fnc intfnc, Expense exps)
         {
             _intFnc = intfnc;
-            _currentMovement = new Movement();
+            _currentMovement = new Expense();
             InitializeComponent();
             LoadMovementList();
-            Display(mvt);
+            Display(exps);
         }
-        public MvtDelete(Interface_fnc intfnc, int? mvtId)
+        public ExpsDelete(Interface_fnc intfnc, int? expsId)
         {
             _intFnc = intfnc;
-            _currentMovement = new Movement();
+            _currentMovement = new Expense();
             InitializeComponent();
             LoadMovementList();
-            if (mvtId != null) Display(mvtId);
+            if (expsId != null) Display(expsId);
             else return;
         }
         #endregion
@@ -56,9 +56,9 @@ namespace Droid_financial
         private void LoadMovementList()
         {
             comboBoxListMovements.Items.Clear();
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                comboBoxListMovements.Items.Add(mvt.Gop.ToString() + " " + mvt.Name);
+                comboBoxListMovements.Items.Add(exps.Gop.ToString() + " " + exps.Name);
             }
         }
         private void DeleteIt()
@@ -70,45 +70,45 @@ namespace Droid_financial
         private void LoadMovement()
         {
             string tmp = string.Empty;
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                tmp = mvt.StrGop + " " + mvt.Name;
+                tmp = exps.StrGop + " " + exps.Name;
                 if (tmp.Equals(comboBoxListMovements.Text))
                 {
-                    Display(mvt);
+                    Display(exps);
                     break;
                 }
             }
         }
-        private void Display(int? mvtId)
+        private void Display(int? expsId)
         {
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                if (mvtId.Equals(mvt.ID))
+                if (expsId.Equals(exps.Id))
                 {
-                    Display(mvt);
+                    Display(exps);
                     break;
                 }
             }
         }
         private void Display(string gop, string name)
         {
-            foreach (Movement mvt in _intFnc.CurrentProject.Movements)
+            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
             {
-                if (gop.Equals(mvt.StrGop) && name.Equals(mvt.Name))
+                if (gop.Equals(exps.StrGop) && name.Equals(exps.Name))
                 {
-                    Display(mvt);
+                    Display(exps);
                     break;
                 }
             }
         }
-        private void Display(Movement mvt)
+        private void Display(Expense exps)
         {
-            labelNameValue.Text = mvt.Name;
-            labelGopValue.Text = mvt.StrGop;
-            comboBoxListMovements.Text = mvt.StrGop + " " + mvt.Name;
+            labelNameValue.Text = exps.Name;
+            labelGopValue.Text = exps.StrGop;
+            comboBoxListMovements.Text = exps.StrGop + " " + exps.Name;
 
-            _currentMovement = mvt;
+            _currentMovement = exps;
         }
         #endregion
 

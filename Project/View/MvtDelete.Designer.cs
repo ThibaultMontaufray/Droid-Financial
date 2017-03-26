@@ -1,6 +1,6 @@
 ﻿namespace Droid_financial
 {
-    partial class MvtDelete
+    partial class ExpsDelete
     {
         /// <summary>
         /// Required designer variable.
@@ -153,13 +153,13 @@
             this.labelFirstName.Text = "Family";
             this.labelFirstName.Click += new System.EventHandler(this.labelFirstName_Click);
             // 
-            // MvtDelete
+            // ExpsDelete
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 258);
             this.Controls.Add(this.panelMember);
-            this.Name = "MvtDelete";
+            this.Name = "ExpsDelete";
             this.Text = "UserCard";
             this.Controls.SetChildIndex(this.panelMember, 0);
             this.panelMember.ResumeLayout(false);
