@@ -380,7 +380,6 @@ namespace Droid_financial
         
         private void CalculateExpenses()
         {
-            double expense = 0;
             string currentCurrency = (_currencyProject == null ? _currencyDefault : _currencyProject);
             _expenses = 0;
 

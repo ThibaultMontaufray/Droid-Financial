@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewWelcome));
             this.panelFinance1 = new Droid_financial.PanelFinance();
             this.viewExpences1 = new Droid_financial.ViewExpences();
-            this._viewMovementExpensers = new Droid_financial.ViewMovement();
+            this._viewMovementExpensers = new Droid_financial.ViewMovements();
             this.panelGraph1 = new Droid_financial.PanelGraph();
-            this.viewMovement1 = new Droid_financial.ViewMovement();
+            this.viewMovement1 = new Droid_financial.ViewMovements();
             this.panelFinance1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +45,7 @@
             this.panelFinance1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelFinance1.Location = new System.Drawing.Point(0, 0);
             this.panelFinance1.Name = "panelFinance1";
-            this.panelFinance1.Size = new System.Drawing.Size(972, 530);
+            this.panelFinance1.Size = new System.Drawing.Size(972, 274);
             this.panelFinance1.TabIndex = 0;
             // 
             // viewExpences1
@@ -59,10 +59,10 @@
             // 
             // _viewMovementExpensers
             // 
-            this._viewMovementExpensers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._viewMovementExpensers.Location = new System.Drawing.Point(0, 273);
+            this._viewMovementExpensers.InterfaceFinancial = null;
+            this._viewMovementExpensers.Location = new System.Drawing.Point(314, 14);
             this._viewMovementExpensers.Name = "_viewMovementExpensers";
-            this._viewMovementExpensers.Size = new System.Drawing.Size(972, 257);
+            this._viewMovementExpensers.Size = new System.Drawing.Size(655, 248);
             this._viewMovementExpensers.TabIndex = 0;
             // 
             // panelGraph1
@@ -77,6 +77,7 @@
             // viewMovement1
             // 
             this.viewMovement1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.viewMovement1.InterfaceFinancial = null;
             this.viewMovement1.Location = new System.Drawing.Point(0, 273);
             this.viewMovement1.Name = "viewMovement1";
             this.viewMovement1.Size = new System.Drawing.Size(972, 257);
@@ -89,7 +90,7 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.panelFinance1);
             this.Name = "ViewWelcome";
-            this.Size = new System.Drawing.Size(972, 530);
+            this.Size = new System.Drawing.Size(972, 274);
             this.panelFinance1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -98,9 +99,9 @@
         #endregion
 
         private PanelFinance panelFinance1;
-        private ViewMovement _viewMovementExpensers;
+        private ViewMovements _viewMovementExpensers;
         private PanelGraph panelGraph1;
         private ViewExpences viewExpences1;
-        private ViewMovement viewMovement1;
+        private ViewMovements viewMovement1;
     }
 }
