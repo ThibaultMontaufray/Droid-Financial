@@ -1,5 +1,5 @@
 ﻿using Tools4Libraries;
-namespace Droid_financial
+namespace Droid.financial
 {
     partial class ExpsEdit
     {

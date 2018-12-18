@@ -8,7 +8,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     public class Refund
     {

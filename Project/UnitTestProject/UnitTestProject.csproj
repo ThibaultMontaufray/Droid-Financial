@@ -63,9 +63,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Droid_Financial.csproj">
-      <Project>{92850be1-bbca-4d0c-a6d0-7bdc61ab0cb5}</Project>
-      <Name>Droid_Financial</Name>
+    <ProjectReference Include="..\..\..\Tools4Libraries\Tools4Libraries.csproj">
+      <Project>{aad2b1be-9b2d-455d-8dd4-64e4e84dd985}</Project>
+      <Name>Tools4Libraries</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

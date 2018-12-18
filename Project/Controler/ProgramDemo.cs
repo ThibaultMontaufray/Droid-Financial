@@ -1,7 +1,8 @@
-namespace Droid_financial
+namespace Droid.financial
 {
     using System;
     using System.Windows.Forms;
+    using View;
 
     static class Program
     {
@@ -16,7 +17,8 @@ namespace Droid_financial
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUI());
+            //Application.Run(new GUI());
+            Application.Run(new MainForm());
         }
     }
 }

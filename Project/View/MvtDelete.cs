@@ -8,43 +8,43 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     public partial class ExpsDelete : window_popup
     {
         #region Attribute
-        private Expense _currentMovement;
-        private Interface_fnc _intFnc;
+        private CRE _currentMovement;
+        private InterfaceFinance _intFnc;
         #endregion
 
         #region Properties
-        public Expense Movement
+        public CRE Movement
         {
             get { return _currentMovement; }
         }
         #endregion
 
         #region Constructor
-        public ExpsDelete(Interface_fnc intfnc)
+        public ExpsDelete(InterfaceFinance intfnc)
         {
             _intFnc = intfnc;
-            _currentMovement = new Expense();
+            _currentMovement = new CRE();
             InitializeComponent();
             LoadMovementList();
             comboBoxListMovements.SelectedItem = comboBoxListMovements.Items[0];
         }
-        public ExpsDelete(Interface_fnc intfnc, Expense exps)
+        public ExpsDelete(InterfaceFinance intfnc, CRE exps)
         {
             _intFnc = intfnc;
-            _currentMovement = new Expense();
+            _currentMovement = new CRE();
             InitializeComponent();
             LoadMovementList();
             Display(exps);
         }
-        public ExpsDelete(Interface_fnc intfnc, int? expsId)
+        public ExpsDelete(InterfaceFinance intfnc, int? expsId)
         {
             _intFnc = intfnc;
-            _currentMovement = new Expense();
+            _currentMovement = new CRE();
             InitializeComponent();
             LoadMovementList();
             if (expsId != null) Display(expsId);
@@ -56,7 +56,7 @@ namespace Droid_financial
         private void LoadMovementList()
         {
             comboBoxListMovements.Items.Clear();
-            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
+            foreach (CRE exps in _intFnc.CurrentActivity.ListCRE)
             {
                 comboBoxListMovements.Items.Add(exps.Gop.ToString() + " " + exps.Name);
             }
@@ -70,7 +70,7 @@ namespace Droid_financial
         private void LoadMovement()
         {
             string tmp = string.Empty;
-            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
+            foreach (CRE exps in _intFnc.CurrentActivity.ListCRE)
             {
                 tmp = exps.StrGop + " " + exps.Name;
                 if (tmp.Equals(comboBoxListMovements.Text))
@@ -82,7 +82,7 @@ namespace Droid_financial
         }
         private void Display(int? expsId)
         {
-            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
+            foreach (CRE exps in _intFnc.CurrentActivity.ListCRE)
             {
                 if (expsId.Equals(exps.Id))
                 {
@@ -93,7 +93,7 @@ namespace Droid_financial
         }
         private void Display(string gop, string name)
         {
-            foreach (Expense exps in _intFnc.CurrentProject.ListExpenses)
+            foreach (CRE exps in _intFnc.CurrentActivity.ListCRE)
             {
                 if (gop.Equals(exps.StrGop) && name.Equals(exps.Name))
                 {
@@ -102,7 +102,7 @@ namespace Droid_financial
                 }
             }
         }
-        private void Display(Expense exps)
+        private void Display(CRE exps)
         {
             labelNameValue.Text = exps.Name;
             labelGopValue.Text = exps.StrGop;

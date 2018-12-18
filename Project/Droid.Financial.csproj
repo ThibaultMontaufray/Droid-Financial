@@ -1,0 +1,475 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Droid.financial</RootNamespace>
+    <AssemblyName>Droid.financial</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>lib\4.5.1\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TobiProject|AnyCPU'">
+    <OutputPath>bin\AnyCPU\TobiProject\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ServoIconFinance.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Droid|AnyCPU'">
+    <OutputPath>bin\AnyCPU\Droid\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\AnyCPU\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\AnyCPU\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TobiProject|AnyCPU'">
+    <OutputPath>bin\AnyCPU\TobiProject\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Droid|AnyCPU'">
+    <OutputPath>bin\AnyCPU\Droid\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TobiProject|AnyCPU'">
+    <OutputPath>bin\TobiProject\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Droid|AnyCPU'">
+    <OutputPath>bin\Droid\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TobiProject|x86'">
+    <OutputPath>bin\x86\TobiProject\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Droid|x86'">
+    <OutputPath>bin\x86\Droid\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.OCR, Version=3.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aspose.OCR.3.6.0\lib\net45\Aspose.OCR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms.Ribbon, Version=3.5.8.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\servOfinance\ConsoleApplication1\packages\Tools4Libraries.1.0.21\lib\System.Windows.Forms.Ribbon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controler\Parser.cs" />
+    <Compile Include="Controler\ParserCreditAgricole.cs" />
+    <Compile Include="Controler\ProgramDemo.cs" />
+    <Compile Include="Model\Bill.cs" />
+    <Compile Include="Model\Change.cs" />
+    <Compile Include="Model\CRI.cs" />
+    <Compile Include="Model\Movement.cs" />
+    <Compile Include="Model\PaymentSupport.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\Refund.cs" />
+    <Compile Include="Model\Specification.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\TypeAccount.cs" />
+    <Compile Include="Model\Unit.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ActivityPreviewPerso.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ActivityPreviewPerso.Designer.cs">
+      <DependentUpon>ActivityPreviewPerso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ActivityPreviewPro.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ActivityPreviewPro.Designer.cs">
+      <DependentUpon>ActivityPreviewPro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewBillPreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewBillPreview.Designer.cs">
+      <DependentUpon>ViewBillPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewBillDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewBillDetails.Designer.cs">
+      <DependentUpon>ViewBillDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewBills.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewBills.Designer.cs">
+      <DependentUpon>ViewBills.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewCompanies.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewCompanies.Designer.cs">
+      <DependentUpon>ViewCompanies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewSpecifications.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewSpecifications.Designer.cs">
+      <DependentUpon>ViewSpecifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewSpecification.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewSpecification.Designer.cs">
+      <DependentUpon>ViewSpecification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewAccountResume.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewAccountResume.Designer.cs">
+      <DependentUpon>ViewAccountResume.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewMovements.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewMovements.Designer.cs">
+      <DependentUpon>ViewMovements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewExpences.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewExpences.Designer.cs">
+      <DependentUpon>ViewExpences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewGOP.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewActivityDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewActivityDetail.Designer.cs">
+      <DependentUpon>ViewActivityDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Screen\ViewRefund.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewUser.cs" />
+    <Compile Include="View\CamGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CamGUI.Designer.cs">
+      <DependentUpon>CamGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DeviseEdition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtDelete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtDelete.Designer.cs">
+      <DependentUpon>MvtDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\PanelGraph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\ToolStripMenuFNC.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\UserDelete.cs" />
+    <Compile Include="View\UserDelete.Designer.cs">
+      <DependentUpon>UserDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Event.Designer.cs">
+      <DependentUpon>Event.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MvtEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MvtEdit.Designer.cs">
+      <DependentUpon>MvtEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\GUI.Designer.cs">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controler\Interface_fnc.cs" />
+    <Compile Include="Model\CRE.cs" />
+    <Compile Include="Model\FinancialActivity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\EntityProfil.cs" />
+    <Compile Include="View\PanelFinance.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\UserEdit.cs" />
+    <Compile Include="View\UserEdit.Designer.cs">
+      <DependentUpon>UserEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserPanel.cs" />
+    <Compile Include="View\Screen\ViewMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewWelcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Screen\ViewWelcome.Designer.cs">
+      <DependentUpon>ViewWelcome.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="View\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ActivityPreviewPerso.resx">
+      <DependentUpon>ActivityPreviewPerso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ActivityPreviewPro.resx">
+      <DependentUpon>ActivityPreviewPro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewBillPreview.resx">
+      <DependentUpon>ViewBillPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewBillDetails.resx">
+      <DependentUpon>ViewBillDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewBills.resx">
+      <DependentUpon>ViewBills.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewCompanies.resx">
+      <DependentUpon>ViewCompanies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewSpecifications.resx">
+      <DependentUpon>ViewSpecifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewSpecification.resx">
+      <DependentUpon>ViewSpecification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewAccountResume.resx">
+      <DependentUpon>ViewAccountResume.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewMovements.resx">
+      <DependentUpon>ViewMovements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewExpences.resx">
+      <DependentUpon>ViewExpences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\CamGUI.resx">
+      <DependentUpon>CamGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DeviseEdition.resx">
+      <DependentUpon>DeviseEdition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MvtDelete.resx">
+      <DependentUpon>MvtDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UserDelete.resx">
+      <DependentUpon>UserDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Event.resx">
+      <DependentUpon>Event.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MvtEdit.resx">
+      <DependentUpon>MvtEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\GUI.resx">
+      <DependentUpon>GUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UserEdit.resx">
+      <DependentUpon>UserEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewActivityDetail.resx">
+      <DependentUpon>ViewActivityDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewRefund.resx">
+      <DependentUpon>ViewRefund.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Screen\ViewWelcome.resx">
+      <DependentUpon>ViewWelcome.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Droid-Image\Project\Droid.Image.csproj">
+      <Project>{04d2d4e1-f5f1-4dad-a334-c5671bdd8f64}</Project>
+      <Name>Droid.Image</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Droid-Litterature\Project\Droid.Litterature.csproj">
+      <Project>{9a7682a2-ca86-4a3f-a785-9d596d750d33}</Project>
+      <Name>Droid.Litterature</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Droid-People\Project\Droid.People.csproj">
+      <Project>{d91dab8b-5727-425a-bb7c-5b76ece077dd}</Project>
+      <Name>Droid.People</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Droid-Scheduler\Project\Droid.Scheduler.csproj">
+      <Project>{8CD1E957-1DD4-46D3-A549-FF5837F3A658}</Project>
+      <Name>Droid.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools4Libraries\Tools4Libraries.csproj">
+      <Project>{aad2b1be-9b2d-455d-8dd4-64e4e84dd985}</Project>
+      <Name>Tools4Libraries</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShieldTileBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closeButton_Hover.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServoIconFinance.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

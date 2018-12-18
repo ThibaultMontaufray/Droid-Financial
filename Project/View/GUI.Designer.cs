@@ -1,4 +1,4 @@
-namespace Droid_financial
+namespace Droid.financial
 {
     partial class GUI
     {

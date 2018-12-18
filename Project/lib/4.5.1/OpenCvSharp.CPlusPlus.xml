@@ -3159,6 +3159,145 @@
             <param name="baseLine"></param>
             <returns></returns>
         </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,OpenCvSharp.CPlusPlus.SparseMat)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.Write(OpenCvSharp.CPlusPlus.FileStorage,System.String,System.Collections.Generic.IEnumerable{OpenCvSharp.CPlusPlus.KeyPoint})">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.WriteScalar(OpenCvSharp.CPlusPlus.FileStorage,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.WriteScalar(OpenCvSharp.CPlusPlus.FileStorage,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.WriteScalar(OpenCvSharp.CPlusPlus.FileStorage,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.WriteScalar(OpenCvSharp.CPlusPlus.FileStorage,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadInt(OpenCvSharp.CPlusPlus.FileNode,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadFloat(OpenCvSharp.CPlusPlus.FileNode,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadDouble(OpenCvSharp.CPlusPlus.FileNode,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadString(OpenCvSharp.CPlusPlus.FileNode,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadMat(OpenCvSharp.CPlusPlus.FileNode,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultMat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadSparseMat(OpenCvSharp.CPlusPlus.FileNode,OpenCvSharp.CPlusPlus.SparseMat)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="defaultMat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Cv2.ReadKeyPoints(OpenCvSharp.CPlusPlus.FileNode)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.CPlusPlus.Cv2.GetGaborKernel(OpenCvSharp.CPlusPlus.Size,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32)">
             <summary>
             
@@ -5232,6 +5371,79 @@
             <param name="fileName"></param>
             <returns></returns>
         </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,OpenCvSharp.CPlusPlus.SparseMat)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.Write(System.String,System.Collections.Generic.IEnumerable{OpenCvSharp.CPlusPlus.KeyPoint})">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.WriteScalar(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.WriteScalar(System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.WriteScalar(System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileStorage.WriteScalar(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
         <member name="T:OpenCvSharp.CPlusPlus.FileNode">
             <summary>
             File Storage Node class
@@ -5389,6 +5601,54 @@
         <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadObj">
             <summary>
             Reads the registered object and returns pointer to it
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadInt(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadFloat(System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadDouble(System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadMat(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="defaultMat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadSparseMat(OpenCvSharp.CPlusPlus.SparseMat)">
+            <summary>
+            
+            </summary>
+            <param name="defaultMat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.FileNode.ReadKeyPoints">
+            <summary>
+            
             </summary>
             <returns></returns>
         </member>
@@ -9720,6 +9980,100 @@
             </summary>
             <param name="disposing"></param>
         </member>
+        <member name="T:OpenCvSharp.CPlusPlus.RNG_MT19937">
+            <summary>
+            Mersenne Twister random number generator
+            </summary>
+            <remarks>operations.hpp</remarks>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.#ctor(System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.op_Explicit(OpenCvSharp.CPlusPlus.RNG_MT19937)~System.UInt32">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.op_Explicit(OpenCvSharp.CPlusPlus.RNG_MT19937)~System.Int32">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.op_Explicit(OpenCvSharp.CPlusPlus.RNG_MT19937)~System.Single">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.op_Explicit(OpenCvSharp.CPlusPlus.RNG_MT19937)~System.Double">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Seed(System.UInt32)">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Next">
+            <summary>
+            updates the state and returns the next 32-bit unsigned integer random number
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Run(System.UInt32)">
+            <summary>
+            returns a random integer sampled uniformly from [0, N).
+            </summary>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Run">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Uniform(System.Int32,System.Int32)">
+            <summary>
+            returns uniformly distributed integer random number from [a,b) range
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Uniform(System.Single,System.Single)">
+            <summary>
+            returns uniformly distributed floating-point random number from [a,b) range
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.RNG_MT19937.Uniform(System.Double,System.Double)">
+            <summary>
+            returns uniformly distributed double-precision floating-point random number from [a,b) range
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
         <member name="T:OpenCvSharp.CPlusPlus.Rectf">
             <summary>
             
@@ -9990,6 +10344,156 @@
             Converts this object to a human readable string.
             </summary>
             <returns>A string that represents this object.</returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor">
+            <summary>
+            Brute-force descriptor matcher.
+            For each descriptor in the first set, this matcher finds the closest descriptor in the second set by trying each one.
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.#ctor(OpenCvSharp.CPlusPlus.Feature2D,OpenCvSharp.CPlusPlus.DescriptorMatcher)">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="dextractor">Descriptor extractor that is used to compute descriptors for an input image and its keypoints.</param>
+            <param name="dmatcher">Descriptor matcher that is used to find the nearest word of the trained vocabulary for each keypoint descriptor of the image.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.Dispose(System.Boolean)">
+            <summary>
+            Releases the resources
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.SetVocabulary(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Sets a visual vocabulary.
+            </summary>
+            <param name="vocabulary">Vocabulary (can be trained using the inheritor of BOWTrainer ). 
+            Each row of the vocabulary is a visual word(cluster center).</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.GetVocabulary">
+            <summary>
+            Returns the set vocabulary.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.Compute(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.KeyPoint[]@,OpenCvSharp.CPlusPlus.Mat,System.Int32[][]@,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Computes an image descriptor using the set visual vocabulary.
+            </summary>
+            <param name="image">Image, for which the descriptor is computed.</param>
+            <param name="keypoints">Keypoints detected in the input image.</param>
+            <param name="imgDescriptor">Computed output image descriptor.</param>
+            <param name="pointIdxsOfClusters">pointIdxsOfClusters Indices of keypoints that belong to the cluster. 
+            This means that pointIdxsOfClusters[i] are keypoint indices that belong to the i -th cluster(word of vocabulary) returned if it is non-zero.</param>
+            <param name="descriptors">Descriptors of the image keypoints that are returned if they are non-zero.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.Compute2(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.KeyPoint[]@,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Computes an image descriptor using the set visual vocabulary.
+            </summary>
+            <param name="image">Image, for which the descriptor is computed.</param>
+            <param name="keypoints">Keypoints detected in the input image.</param>
+            <param name="imgDescriptor">Computed output image descriptor.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.DescriptorSize">
+            <summary>
+            Returns an image descriptor size if the vocabulary is set. Otherwise, it returns 0.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWImgDescriptorExtractor.DescriptorType">
+            <summary>
+            Returns an image descriptor type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.BOWKMeansTrainer">
+            <summary>
+            Brute-force descriptor matcher.
+            For each descriptor in the first set, this matcher finds the closest descriptor in the second set by trying each one.
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWKMeansTrainer.#ctor(System.Int32,System.Nullable{OpenCvSharp.CPlusPlus.TermCriteria},System.Int32,OpenCvSharp.KMeansFlag)">
+            <summary>
+            
+            </summary>
+            <param name="clusterCount"></param>
+            <param name="termcrit"></param>
+            <param name="attempts"></param>
+            <param name="flags"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWKMeansTrainer.Dispose(System.Boolean)">
+            <summary>
+            Releases the resources
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWKMeansTrainer.Cluster">
+            <summary>
+            Clusters train descriptors.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWKMeansTrainer.Cluster(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Clusters train descriptors.
+            </summary>
+            <param name="descriptors">Descriptors to cluster. Each row of the descriptors matrix is a descriptor. Descriptors are not added to the inner train descriptor set.
+            The vocabulary consists of cluster centers. So, this method returns the vocabulary. In the first variant of the method, train descriptors stored in the object 
+            are clustered.In the second variant, input descriptors are clustered.</param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.BOWTrainer">
+            <summary>
+            Brute-force descriptor matcher.
+            For each descriptor in the first set, this matcher finds the closest descriptor in the second set by trying each one.
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.Add(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Adds descriptors to a training set.
+            </summary>
+            <param name="descriptors">descriptors Descriptors to add to a training set. Each row of the descriptors matrix is a descriptor.
+            The training set is clustered using clustermethod to construct the vocabulary.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.GetDescriptors">
+            <summary>
+            Returns a training set of descriptors.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.DescriptorsCount">
+            <summary>
+            Returns the count of all descriptors stored in the training set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.Cluster">
+            <summary>
+            Clusters train descriptors.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.BOWTrainer.Cluster(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Clusters train descriptors.
+            </summary>
+            <param name="descriptors">Descriptors to cluster. Each row of the descriptors matrix is a descriptor. Descriptors are not added to the inner train descriptor set.
+            The vocabulary consists of cluster centers. So, this method returns the vocabulary. In the first variant of the method, train descriptors stored in the object 
+            are clustered.In the second variant, input descriptors are clustered.</param>
+            <returns></returns>
         </member>
         <member name="T:OpenCvSharp.CPlusPlus.FlannBasedMatcher">
             <summary>
@@ -22676,6 +23180,7 @@
             Random Number Generator.
             The class implements RNG using Multiply-with-Carry algorithm.
             </summary>
+            <remarks>operations.hpp</remarks>
         </member>
         <member name="P:OpenCvSharp.CPlusPlus.RNG.State">
             <summary>
@@ -25794,6 +26299,57 @@
             </summary>
         </member>
         <member name="M:OpenCvSharp.CPlusPlus.VectorOfVectorDouble.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.VectorOfVectorInt">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.VectorOfVectorInt.disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.VectorOfVectorInt.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.VectorOfVectorInt.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.VectorOfVectorInt.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.VectorOfVectorInt.Size1">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.VectorOfVectorInt.Size2">
+            <summary>
+            vector[i].size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.VectorOfVectorInt.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.VectorOfVectorInt.ToArray">
             <summary>
             Converts std::vector to managed array
             </summary>

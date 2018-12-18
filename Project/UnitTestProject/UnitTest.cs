@@ -17,7 +17,7 @@ namespace UnitTestProject
         {
             try
             {
-                Interface_fnc intfnc = new Interface_fnc(new System.Collections.Generic.List<string>());
+                InterfaceFinance intfnc = new InterfaceFinance(string.Empty);
                 Assert.IsTrue(true);
             }
             catch (System.Exception exp)
@@ -136,7 +136,7 @@ namespace UnitTestProject
         {
             try
             {
-                ProjectFinancial pf = new ProjectFinancial();
+                FinancialActivity pf = new FinancialActivity();
                 pf.Balance();
                 pf.ExportCSV();
                 pf.ExportPDF(""); // TODO : see why this one have parameter

@@ -6,7 +6,7 @@
 //using System.Text;
 //using System.Windows.Forms;
 
-//namespace Droid_financial
+//namespace Droid.financial
 //{
 //    public class UserPanel : Panel
 //    {

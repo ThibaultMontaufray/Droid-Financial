@@ -11,8 +11,9 @@ using iTextSharp.text.html.simpleparser;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using System.Reflection;
+using Droid.scheduler;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     // TODO
     /*
@@ -23,24 +24,19 @@ namespace Droid_financial
 
     public class FinancialActivity
     {
-        #region Enum
-        public enum TypeAccount
-        {
-            NONE,
-            FRIEND,
-            PERSONNAL,
-            PROFESSIONNAL
-        }
-        #endregion
-
         #region Attribute
         private string _id;
-        private List<User> _users;
-        private List<Expense> _lstExpenses;
+        private List<EntityFinancialDecorator> _entities;
+        private List<CRE> _listCRE;
+        private List<CRI> _listCRI;
         private List<Change> _changes;
         private List<Refund> _refunds;
-        private List<User> _userGiver;
-        private List<User> _userReceiver;
+        private List<EntityFinancialDecorator> _entityGiver;
+        private List<EntityFinancialDecorator> _entityReceiver;
+        private List<Bill> _bills;
+        private Bill _currentBill;
+        private List<Specification> _specifications;
+        private List<Product> _products;
         private string _name;
         private string _pathActivity;
         private TypeAccount _typeAcc;
@@ -49,6 +45,7 @@ namespace Droid_financial
         private List<string> _lstCurrencyNames;
         private List<int> _lstCurrencyWeigh;
         private double _solde;
+        private double _soldeInitial;
         private DateTime _startDate;
         private DateTime _endDate;
         private double _expenses;
@@ -57,19 +54,18 @@ namespace Droid_financial
         private List<DateTime> _listDateBornes;
         private DateTime _startJalon;
         private bool _paramsSetAutomatialy;
-        private Interface_fnc _intFnc;
         #endregion
 
         #region Properties
+        public Bill CurrentBill
+        {
+            get { return _currentBill; }
+            set { _currentBill = value; }
+        }
         public string Id
         {
             get { return _id; }
             set { _id = value; }
-        }
-        public Interface_fnc InterfaceFinancial
-        {
-            get { return _intFnc; }
-            set { _intFnc = value; }
         }
         public bool ParamsSetAutomaticaly
         {
@@ -86,7 +82,7 @@ namespace Droid_financial
             get 
             {
                 string cur = null;
-                foreach (Expense exps in _lstExpenses)
+                foreach (CRE exps in _listCRE)
                 {
                     if (string.IsNullOrEmpty(cur)) cur = exps.Currency;
                     else if (!cur.Equals(exps.Currency)) return true;
@@ -96,8 +92,11 @@ namespace Droid_financial
         }
         public double Solde
         {
-            get { return _solde; }
-            set { _solde = value; }
+            get
+            {
+                if (ListCRI == null || ListCRI.Count == 0) { return 0; }
+                else return ListCRI.OrderBy(l => l.Date).ToList().FirstOrDefault().Amount;
+            }
         }
         public string PathActivity
         {
@@ -119,7 +118,7 @@ namespace Droid_financial
             get
             {
                 _endDate = DateTime.MinValue;
-                foreach (Expense exps in ListExpenses) if (_endDate > exps.EndDate) _endDate = exps.EndDate;
+                foreach (CRE exps in ListCRE) if (_endDate > exps.EndDate) _endDate = exps.EndDate;
                 return _endDate;
             }
             set { _endDate = value; }
@@ -129,25 +128,30 @@ namespace Droid_financial
             get
             {
                 _startDate = DateTime.MaxValue;
-                foreach (Expense exps in ListExpenses) if (_startDate > exps.StartDate) _startDate = exps.StartDate;
+                foreach (CRE exps in ListCRE) if (_startDate > exps.StartDate) _startDate = exps.StartDate;
                 return _startDate;
             }
             set { _startDate = value; }
         }
-        public List<User> Users
+        public List<EntityFinancialDecorator> Entities
         {
-            get { return _users; }
-            set { _users = value; }
+            get { return _entities; }
+            set { _entities = value; }
         }
-        public List<Expense> ListExpenses
+        public List<CRE> ListCRE
         {
             //get { return _movements.OrderBy(x => x.StrGop).ToList(); }
-            get { return _lstExpenses; }
+            get { return _listCRE; }
             set 
             { 
-                _lstExpenses = value;
+                _listCRE = value;
                 UpdateSolde();
             }
+        }
+        public List<CRI> ListCRI
+        {
+            get { return _listCRI; }
+            set { _listCRI = value; }
         }
         public List<Change> Changes
         {
@@ -199,48 +203,112 @@ namespace Droid_financial
                 else return CurrencyProject;
             }
         }
+        public double SoldeInitial
+        {
+            get { return _soldeInitial; }
+            set { _soldeInitial = value; }
+        }
+        public List<Specification> Specifications
+        {
+            get { return _specifications; }
+            set { _specifications = value; }
+        }
+        public List<Bill> Bills
+        {
+            get { return _bills; }
+            set { _bills = value; }
+        }
+        public List<Product> Products
+        {
+            get { return _products; }
+            set { _products = value; }
+        }
+        public int BillNexId
+        {
+            get
+            {
+                int id = 1;
+                if (_bills?.Count > 0)
+                {
+                    foreach (var item in _bills)
+                    {
+                        if (item.Id > id) { id = item.Id; }
+                    }
+                }
+                return id;
+            }
+        }
+        public int CurrentTurnover
+        {
+            get
+            {
+                int ct = 0;
+                foreach (var item in _bills.Where(b => b.CreateDate.Year == DateTime.Now.Year).ToList())
+                {
+                    ct += item.Amount;
+                }
+                return ct;
+            }
+        }
         #endregion
 
         #region Constructor
-        public FinancialActivity()
-        {
-            Random rand = new Random((int)DateTime.Now.Ticks);
-            _id = string.Format("financial.{0}-{1}-{2}", rand.Next(), (int)DateTime.Now.Ticks, rand.Next());
-
-            Users = new List<User>();
-            ListExpenses = new List<Expense>();
-            Changes = new List<Change>();
-            Refunds = new List<Refund>();
-
-            _lstCurrencyNames = new List<string>();
-            _lstCurrencyWeigh = new List<int>();
-            _currencyDefault = "EUR";
-            _solde = 0;
-            _name = "DefaultProject_" + DateTime.Now.ToString();
-            _startDate = DateTime.Now.AddDays(-42);
-            _endDate = DateTime.Now.AddDays(42);
-            _paramsSetAutomatialy = true;
-        }
         public FinancialActivity(string path)
         {
-            Random rand = new Random((int)DateTime.Now.Ticks);
-            _id = string.Format("financial.{0}-{1}-{2}", rand.Next(), (int)DateTime.Now.Ticks, rand.Next());
-
-            Users = new List<User>();
-            ListExpenses = new List<Expense>();
-            Changes = new List<Change>();
-            Refunds = new List<Refund>();
-            _lstCurrencyNames = new List<string>();
-            _lstCurrencyWeigh = new List<int>();
-            _currencyDefault = "EUR";
-            _solde = 0;
-            _name = "DefaultProject_" + DateTime.Now.ToString();
-            _startDate = DateTime.Now.AddDays(-42);
-            _endDate = DateTime.Now.AddDays(42);
-            _paramsSetAutomatialy = true;
-
             _pathActivity = path;
+
+            Init();
             LoadProject();
+
+            // TODO : ARRRRRRRRRRRRRGH but do it !!!!!!!!!!!!!
+            _entities = new List<EntityFinancialDecorator>()
+            {
+                new EntityFinancialDecorator()
+                {
+                    Name = "BIMANDCO",
+                    Address = "PARC ECO NORMANDIE",
+                    City = "76430 Saint-romain-de-colbosc",
+                    Siret = "810 000 943 00011"
+                },
+                new EntityFinancialDecorator()
+                {
+                    Name = "Thibault MONTAUFRAY",
+                    Address = "2 Rue Léon Chapelle",
+                    City = "76300 Sotteville Lès Rouen",
+                    Siret = "838 095 909 00019"
+                },
+                new EntityFinancialDecorator()
+                {
+                    Name = "ExTeam",
+                    Address = "53 RUE BAUDIN",
+                    City = "92300 LEVALLOIS-PERRET",
+                    Siret = "791 667 116 00036"
+                }
+            };
+
+            _specifications = new List<Specification>()
+            {
+                new Specification()
+                {
+                    CreationDate = new DateTime(2018, 04, 01),
+                    From = _entities[1],
+                    To = _entities[2],
+                    MaxDays = 45,
+                    Deposit = 0,
+                    Status = Status.PENDING,
+                    Products = new List<Product>()
+                    {
+                        new Product()
+                        {
+                            Quantity = 10,
+                            Unit = Unit.DAY,
+                            Description = "Assistance à la gestion du parc informatique",
+                            Cost = 480,
+                            Name = "DevOps"
+                        }
+                    }
+                }
+            };
         }
         #endregion
 
@@ -252,20 +320,29 @@ namespace Droid_financial
         }
         public void Balance()
         {
-            foreach (User user in Users) user.Movements.Clear();
+            foreach (EntityFinancialDecorator user in Entities) user.Movements.Clear();
             CalculateExpenses();
             CalculateLoans();
             CalculateRefund();
         }
-        public User GetUser(string userName)
+        public EntityFinancialDecorator GetEntityProfile(string userName)
         {
             string str;
-            foreach (User usr in Users)
+            foreach (EntityFinancialDecorator usr in Entities)
             {
-                str = usr.Firstname + " " + usr.Name;
+                str = usr.GetName();
                 if (userName.Trim().Equals(str.Trim())) return usr;
             }
             return null;
+        }
+        public double GetTax(DateTime date)
+        {
+            int cumul = 0;
+            foreach (var bill in _bills.Where(b => b.CreateDate.Year == date.Year && b.CreateDate.Month == date.Month).ToList())
+            {
+                cumul += bill.Amount;
+            }
+            return cumul * 0.25;
         }
         public string ExportXML()
         {
@@ -327,20 +404,60 @@ namespace Droid_financial
         #endregion
 
         #region Methods private
+        private void Init()
+        {
+            _specifications = new List<Specification>();
+            _bills = new List<Bill>();
+            _products = new List<Product>()
+            {
+                new Product()
+                {
+                    Name = "DevOps",
+                    Description = "Assistance à la gestion du parc informatique",
+                    Quantity = 18,
+                    Cost = 270,
+                    Unit = Unit.DAY
+                }
+            };
+
+            Random rand = new Random((int)DateTime.Now.Ticks);
+            _id = string.Format("financial.{0}-{1}-{2}", rand.Next(), (int)DateTime.Now.Ticks, rand.Next());
+
+            Entities = new List<EntityFinancialDecorator>();
+            ListCRE = new List<CRE>();
+            ListCRI = new List<CRI>();
+            Changes = new List<Change>();
+            Refunds = new List<Refund>();
+
+            _lstCurrencyNames = new List<string>();
+            _lstCurrencyWeigh = new List<int>();
+            _currencyDefault = "EUR";
+            _currencyProject = _currencyDefault;
+            _solde = 0;
+            _soldeInitial = 0;
+            _name = "DefaultProject_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
+            _startDate = DateTime.Now.AddDays(-42);
+            _endDate = DateTime.Now.AddDays(42);
+            _paramsSetAutomatialy = true;
+        }
         private void SaveFile(string path)
         {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            if (!Directory.Exists(Path.Combine(path, _id)))
-            {
-                Directory.CreateDirectory(Path.Combine(path, _id));
-            }
-            string filePath = Path.Combine(path, string.Format("{0}//{0}.xml", _id));
-            using (StreamWriter sw = new StreamWriter(filePath, false))
-            {
-                sw.Write(ExportJson());
+            if (!string.IsNullOrEmpty(path))
+            { 
+                FileInfo fi = new FileInfo(path);
+                if (!Directory.Exists(fi.DirectoryName))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                //if (!Directory.Exists(Path.Combine(path, _id)))
+                //{
+                //    Directory.CreateDirectory(Path.Combine(path, _id));
+                //}
+                //string filePath = Path.Combine(path, string.Format("{0}//{0}.xml", _id));
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    sw.Write(ExportJson());
+                }
             }
         }
         private void SaveXml(string xmlObject, string path)
@@ -384,7 +501,7 @@ namespace Droid_financial
             _expenses = 0;
 
             // initialisation
-            foreach (User user in Users)
+            foreach (EntityFinancialDecorator user in Entities)
             {
                 user.Solde = 0;
                 user.SoldeSimulation = 0;
@@ -392,12 +509,12 @@ namespace Droid_financial
                 user.Currency = CurrencyUsed;
             }
             // for each movement add the amount on the user that do it
-            foreach (Expense exps in ListExpenses)
+            foreach (CRE exps in ListCRE)
             {
                 _expenses += exps.Convert(GetChange(currentCurrency, exps.Currency), currentCurrency);
-                foreach (User user in Users)
+                foreach (EntityFinancialDecorator user in Entities)
                 {
-                    // TODO : adapt the calcul with the new dll Droid_people
+                    // TODO : adapt the calcul with the new dll Droid.people
                     //if (exps.UserId.Contains(user.ID))
                     //{
                     //    Expense tmpExps = exps.Clone() as Expense;
@@ -438,10 +555,10 @@ namespace Droid_financial
                     }
                     else if ((oldRfd.CurrentStatus == Refund.Status.GIFT)  || (oldRfd.CurrentStatus == Refund.Status.REFUNDED))
                     {
-                        User.GetUser(Users, oldRfd.Receiver).Solde -= oldRfd.Amount;
-                        User.GetUser(Users, oldRfd.Receiver).SoldeSimulation -= oldRfd.Amount;
-                        User.GetUser(Users, oldRfd.Giver).Solde += oldRfd.Amount;
-                        User.GetUser(Users, oldRfd.Giver).SoldeSimulation += oldRfd.Amount;
+                        EntityFinancialDecorator.GetUser(Entities, oldRfd.Receiver).Solde -= oldRfd.Amount;
+                        EntityFinancialDecorator.GetUser(Entities, oldRfd.Receiver).SoldeSimulation -= oldRfd.Amount;
+                        EntityFinancialDecorator.GetUser(Entities, oldRfd.Giver).Solde += oldRfd.Amount;
+                        EntityFinancialDecorator.GetUser(Entities, oldRfd.Giver).SoldeSimulation += oldRfd.Amount;
                     }
                 }
             }
@@ -451,7 +568,7 @@ namespace Droid_financial
         {
             int indexReceiver = 0;
             BuildUserLists();
-            foreach (User user in _userGiver)
+            foreach (EntityFinancialDecorator user in _entityGiver)
             {
                 RefundUser(user, ref indexReceiver);
             }
@@ -460,7 +577,7 @@ namespace Droid_financial
         {
             // get the list of intervals
             _listDateBornes = new List<DateTime>();
-            foreach (User user in _users)
+            foreach (EntityFinancialDecorator user in _entities)
             {
                 foreach (ICalendar pp in user.Calendars)
                 {
@@ -473,7 +590,7 @@ namespace Droid_financial
             }
             _listDateBornes.Sort();
         }
-        private void CalculateUserPerIntervals(List<User> lstUsers, Expense exps)
+        private void CalculateUserPerIntervals(List<EntityFinancialDecorator> lstUsers, CRE exps)
         {
             _nbUserPerPeriods = new int[_listDateBornes.Count];
             _amountPerPeriods = new double[_listDateBornes.Count];
@@ -481,9 +598,9 @@ namespace Droid_financial
             for (int i = 0; i < _amountPerPeriods.Length; i++) _amountPerPeriods[i] = 0;
 
             // get the nb of participant in each interval
-            foreach (User user in lstUsers)
+            foreach (EntityFinancialDecorator user in lstUsers)
             {
-                if (exps.AllParticipant || exps.Movements.Where(p => p.UserId.Equals(user.ID)).Count() > 0)
+                if (exps.AllParticipant || exps.Movements.Where(p => p.UserId.Equals(user.Id)).Count() > 0)
                 {
                     _startJalon = _listDateBornes[0];
                     foreach (ICalendar pp in user.Calendars)
@@ -500,7 +617,7 @@ namespace Droid_financial
                 }
             }
         }
-        private void CalculateSumPerPeriodWithoutPermanentExps(Expense exps)
+        private void CalculateSumPerPeriodWithoutPermanentExps(CRE exps)
         {
             for (int i = 1; i < _listDateBornes.Count; i++)
             {
@@ -538,15 +655,15 @@ namespace Droid_financial
                 }
             }
         }
-        private void CalculateImpactPeriodOnUser(Expense exps)
+        private void CalculateImpactPeriodOnUser(CRE exps)
         {
             // finaly, attribute the amount per user
             _startJalon = _listDateBornes[0];
             for (int i = 1; i < _listDateBornes.Count; i++)
             {
-                foreach (User user in Users)
+                foreach (EntityFinancialDecorator user in Entities)
                 {
-                    if (exps.Movements.Where(p => p.UserId.Equals(user.ID)).Count() > 0 || exps.AllParticipant)
+                    if (exps.Movements.Where(p => p.UserId.Equals(user.Id)).Count() > 0 || exps.AllParticipant)
                     {
                         foreach (ICalendar pp in user.Calendars)
                         {
@@ -554,12 +671,12 @@ namespace Droid_financial
                             {
                                 if (pp.BeginDate <= _startJalon && pp.EndDate >= _listDateBornes[i])
                                 {
-                                    Expense tmpExps = exps.Clone() as Expense;
+                                    CRE tmpExps = exps.Clone() as CRE;
                                     tmpExps.SubMovement = true;
                                     user.Solde -= (double)(_amountPerPeriods[i] / _nbUserPerPeriods[i]);
                                     user.SoldeSimulation -= (double)(_amountPerPeriods[i] / _nbUserPerPeriods[i]);
                                     tmpExps.Amount = (double)(_amountPerPeriods[i] / _nbUserPerPeriods[i]);
-                                    foreach (Expense m in user.Movements)
+                                    foreach (CRE m in user.Movements)
                                     {
                                         if (m.Id == tmpExps.Id && m.SubMovement == tmpExps.SubMovement)
                                         {
@@ -579,16 +696,16 @@ namespace Droid_financial
         }        
         private void CalculateImpactExps()
         {
-            foreach (Expense exps in _lstExpenses)
+            foreach (CRE exps in _listCRE)
             {
                 if (!exps.IsPartial) CalculateImpactPermanentExps(exps);
                 else CalculateImpactCalendarExps(exps);
             }
         }
-        private void CalculateImpactPermanentExps(Expense exps)
+        private void CalculateImpactPermanentExps(CRE exps)
         {
             bool checkDate = false;
-            foreach (User user in _users)
+            foreach (EntityFinancialDecorator user in _entities)
             {
                 checkDate = false;
                 foreach (ICalendar cal in user.Calendars) if ((exps.EndDate <= cal.EndDate && exps.EndDate >= cal.BeginDate) || (exps.StartDate >= cal.BeginDate && exps.StartDate <= cal.EndDate)) checkDate = true;
@@ -597,12 +714,12 @@ namespace Droid_financial
                 { 
                     if (exps.AllParticipant)
                     {
-                        Expense tmpExps = exps.Clone() as Expense;
+                        CRE tmpExps = exps.Clone() as CRE;
                         tmpExps.SubMovement = true;
-                        user.Solde -= exps.Amount / _users.Count;
-                        user.SoldeSimulation -= exps.Amount / _users.Count;
-                        tmpExps.Amount = (double)(exps.Amount / _users.Count);
-                        foreach (Expense m in user.Movements)
+                        user.Solde -= exps.Amount / _entities.Count;
+                        user.SoldeSimulation -= exps.Amount / _entities.Count;
+                        tmpExps.Amount = (double)(exps.Amount / _entities.Count);
+                        foreach (CRE m in user.Movements)
                         {
                             if (m.Id == tmpExps.Id && m.SubMovement == tmpExps.SubMovement)
                             {
@@ -613,14 +730,14 @@ namespace Droid_financial
                         }
                         if (tmpExps.Amount != 0) user.Movements.Add(tmpExps);
                     }
-                    else if (exps.Movements.Where(p => p.UserId.Equals(user.ID)).Count() > 0)
+                    else if (exps.Movements.Where(p => p.UserId.Equals(user.Id)).Count() > 0)
                     {
-                        Expense tmpExps = exps.Clone() as Expense;
+                        CRE tmpExps = exps.Clone() as CRE;
                         tmpExps.SubMovement = true;
                         user.Solde -= exps.Amount / exps.Movements.Count;
                         user.SoldeSimulation -= exps.Amount / exps.Movements.Count;
                         tmpExps.Amount = (double)(exps.Amount / exps.Movements.Count);
-                        foreach (Expense m in user.Movements)
+                        foreach (CRE m in user.Movements)
                         {
                             if (m.Id == tmpExps.Id && m.SubMovement == tmpExps.SubMovement)
                             {
@@ -634,7 +751,7 @@ namespace Droid_financial
                 }
             }
         }
-        private void CalculateImpactCalendarExps(Expense exps)
+        private void CalculateImpactCalendarExps(CRE exps)
         {
             if (exps.AllParticipant) CalculateForAll(exps);
             else CalculateForPartial(exps);
@@ -642,16 +759,16 @@ namespace Droid_financial
             CalculateSumPerPeriodWithoutPermanentExps(exps);
             CalculateImpactPeriodOnUser(exps);
         }
-        private void CalculateForAll(Expense exps)
+        private void CalculateForAll(CRE exps)
         {
-            CalculateUserPerIntervals(Users, exps);
+            CalculateUserPerIntervals(Entities, exps);
         }
-        private void CalculateForPartial(Expense exps)
+        private void CalculateForPartial(CRE exps)
         {
-            List<User> lstUsers = new List<User>();
-            foreach (User user in _users)
+            List<EntityFinancialDecorator> lstUsers = new List<EntityFinancialDecorator>();
+            foreach (EntityFinancialDecorator user in _entities)
             {
-                if (exps.Movements.Where(p => p.UserId.Equals(user.ID)).Count() > 0)
+                if (exps.Movements.Where(p => p.UserId.Equals(user.Id)).Count() > 0)
                 {
                     lstUsers.Add(user);
                 }
@@ -659,7 +776,7 @@ namespace Droid_financial
             CalculateUserPerIntervals(lstUsers, exps);
         }
 
-        private void RefundUser(User user, ref int indexReceiver)
+        private void RefundUser(EntityFinancialDecorator user, ref int indexReceiver)
         {
             int watchDog = 10000;
             double rest;
@@ -667,36 +784,36 @@ namespace Droid_financial
             while (user.SoldeSimulation <= -0.01 && watchDog > 0)
             {
                 watchDog--;
-                for (int i = 0; i < _userReceiver.Count; i++)
+                for (int i = 0; i < _entityReceiver.Count; i++)
                 {
-                    if (_userReceiver[i].SoldeSimulation > 0)
+                    if (_entityReceiver[i].SoldeSimulation > 0)
                     {
                         indexReceiver = i;
                         break;
                     }
                 }
-                if (indexReceiver < _userReceiver.Count)
+                if (indexReceiver < _entityReceiver.Count)
                 {
                     r = new Refund();
-                    r.Receiver = _userReceiver[indexReceiver].ID;
-                    r.Giver = user.ID;
-                    rest = user.SoldeSimulation + _userReceiver[indexReceiver].SoldeSimulation;
+                    r.Receiver = _entityReceiver[indexReceiver].Id;
+                    r.Giver = user.Id;
+                    rest = user.SoldeSimulation + _entityReceiver[indexReceiver].SoldeSimulation;
                     if (rest > 0) // receiver must have more money
                     {
                         r.Amount = -user.SoldeSimulation;
-                        _userReceiver[indexReceiver].SoldeSimulation += user.SoldeSimulation;
+                        _entityReceiver[indexReceiver].SoldeSimulation += user.SoldeSimulation;
                         user.SoldeSimulation = 0;
                     }
                     else if (rest == 0) // receiver had all money 
                     {
                         r.Amount = -user.SoldeSimulation;
-                        _userReceiver[indexReceiver].SoldeSimulation = 0;
+                        _entityReceiver[indexReceiver].SoldeSimulation = 0;
                         user.SoldeSimulation = 0;
                     }
                     else // receiver ok, giver have to refund another receiver
                     {
-                        r.Amount = _userReceiver[indexReceiver].SoldeSimulation;
-                        _userReceiver[indexReceiver].SoldeSimulation = 0;
+                        r.Amount = _entityReceiver[indexReceiver].SoldeSimulation;
+                        _entityReceiver[indexReceiver].SoldeSimulation = 0;
                         user.SoldeSimulation = rest;
                     }
                     _refunds.Add(r);
@@ -706,15 +823,15 @@ namespace Droid_financial
         }
         private void BuildUserLists()
         {
-            _userGiver = new List<User>();
-            _userReceiver = new List<User>();
-            foreach (User user in Users)
+            _entityGiver = new List<EntityFinancialDecorator>();
+            _entityReceiver = new List<EntityFinancialDecorator>();
+            foreach (EntityFinancialDecorator user in Entities)
             {
-                if (user.Solde > 0) _userReceiver.Add(user);
-                if (user.Solde < 0) _userGiver.Add(user);
+                if (user.Solde > 0) _entityReceiver.Add(user);
+                if (user.Solde < 0) _entityGiver.Add(user);
             }
-            _userGiver = _userGiver.OrderBy(x => x.Solde).ToList();
-            _userReceiver = _userReceiver.OrderByDescending(x => x.Solde).ToList();
+            _entityGiver = _entityGiver.OrderBy(x => x.Solde).ToList();
+            _entityReceiver = _entityReceiver.OrderByDescending(x => x.Solde).ToList();
         }
         private void LoadProject()
         {
@@ -725,15 +842,15 @@ namespace Droid_financial
         }
         private void ClearAllLists()
         {
-            _lstExpenses.Clear();
-            _users.Clear();
+            _listCRE.Clear();
+            _entities.Clear();
             _changes.Clear();
             _lstCurrencyWeigh.Clear();
             _lstCurrencyNames.Clear();
         }
         private void GetDefaultCurrency()
         {
-            foreach (Expense exps in ListExpenses)
+            foreach (CRE exps in ListCRE)
             {
                 if (!_lstCurrencyNames.Contains(exps.Currency)) 
                 {
@@ -764,8 +881,8 @@ namespace Droid_financial
         }
         private void UpdateSolde()
         {
-            _solde = 0;
-            foreach (Expense exps in _lstExpenses)
+            _solde = _soldeInitial;
+            foreach (CRE exps in _listCRE)
             {
                 foreach (Change chg in Changes)
                 {
@@ -779,6 +896,7 @@ namespace Droid_financial
         }
         private void Import(FinancialActivity source, FinancialActivity target)
         {
+            target._bills = source._bills;
             target._amountPerPeriods = source._amountPerPeriods;
             target._changes = source._changes;
             target._currencyDefault = source._currencyDefault;
@@ -786,11 +904,10 @@ namespace Droid_financial
             target._endDate = source._endDate;
             target._expenses = source._expenses;
             target._id = source._id;
-            target._intFnc = source._intFnc;
             target._listDateBornes = source._listDateBornes != null ?  new List<DateTime>(source._listDateBornes) : new List<DateTime>();
             target._lstCurrencyNames = source._lstCurrencyNames != null ? new List<string>( source._lstCurrencyNames) : new List<string>();
             target._lstCurrencyWeigh = source._lstCurrencyWeigh != null ? new List<int>(source._lstCurrencyWeigh) : new List<int>();
-            target._lstExpenses = source._lstExpenses != null ? new List<Expense>(source._lstExpenses) : new List<Expense>();
+            target._listCRE = source._listCRE != null ? new List<CRE>(source._listCRE) : new List<CRE>();
             target._name = source._name;
             target._nbUserPerPeriods = source._nbUserPerPeriods;
             target._paramsSetAutomatialy = source._paramsSetAutomatialy;
@@ -800,9 +917,9 @@ namespace Droid_financial
             target._startDate = source._startDate;
             target._startJalon = source._startJalon;
             target._typeAcc = source._typeAcc;
-            target._userGiver = source._userGiver != null ? new List<User>(source._userGiver) : new List<User>();
-            target._userReceiver = source._userReceiver != null ? new List<User>(source._userReceiver) : new List<User>();
-            target._users = source._users != null ? new List<User>(source._users) : new List<User>();
+            target._entityGiver = source._entityGiver != null ? new List<EntityFinancialDecorator>(source._entityGiver) : new List<EntityFinancialDecorator>();
+            target._entityReceiver = source._entityReceiver != null ? new List<EntityFinancialDecorator>(source._entityReceiver) : new List<EntityFinancialDecorator>();
+            target._entities = source._entities != null ? new List<EntityFinancialDecorator>(source._entities) : new List<EntityFinancialDecorator>();
 
             source = null;
         }
@@ -911,14 +1028,14 @@ namespace Droid_financial
         private string BuildExportCsvGop()
         {
             StringBuilder sb = new StringBuilder();
-            List<Expense.GOP> lstGop = new List<Expense.GOP>();
-            foreach (Expense exps in ListExpenses) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
+            List<CRE.GOP> lstGop = new List<CRE.GOP>();
+            foreach (CRE exps in ListCRE) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
             double sum;
             sb.AppendLine(";;;;;;;;;;");
-            foreach (Expense.GOP g in lstGop)
+            foreach (CRE.GOP g in lstGop)
             {
                 sum = 0;
-                foreach (Expense exps in ListExpenses)
+                foreach (CRE exps in ListCRE)
                 {
                     if (exps.Gop.Equals(g))
                     {
@@ -936,8 +1053,8 @@ namespace Droid_financial
             foreach (Refund r in Refunds)
             {
                 sb.AppendLine(String.Format("refund;{0};{1};{2}",
-                    User.GetUser(Users, r.Giver).Firstname + " " + User.GetUser(Users, r.Giver).Name,
-                    User.GetUser(Users, r.Receiver).Firstname + " " + User.GetUser(Users, r.Receiver).Name,
+                    EntityFinancialDecorator.GetUser(Entities, r.Giver).GetName(),
+                    EntityFinancialDecorator.GetUser(Entities, r.Receiver).GetName(),
                     String.Format("{0:0.00}", r.Amount))
                     );
             }
@@ -948,13 +1065,13 @@ namespace Droid_financial
             StringBuilder sb = new StringBuilder();
             string line;
             sb.AppendLine(";;;;;;;;;;");
-            foreach (User usr in Users)
+            foreach (EntityFinancialDecorator usr in Entities)
             {
-                foreach (Expense exps in usr.Movements)
+                foreach (CRE exps in usr.Movements)
                 {
                     line = "user;";
-                    line += usr.Firstname + " " + usr.Name + ";";
-                    // TODO : adapt the calcul with the new dll Droid_people
+                    line += usr.GetName() + ";";
+                    // TODO : adapt the calcul with the new dll Droid.people
                     //line += exps.UserId.Contains(usr.ID) ? "expense;" : "participant;";
                     //if (exps.UserId.Contains(usr.ID) && !exps.SubMovement) line += "bill;";
                     //else if (exps.UserId.Contains(usr.ID)) line += "real expense;";
@@ -990,15 +1107,15 @@ namespace Droid_financial
         private string BuildExportTxtGop()
         {
             StringBuilder sb = new StringBuilder();
-            List<Expense.GOP> lstGop = new List<Expense.GOP>();
-            foreach (Expense exps in ListExpenses) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
+            List<CRE.GOP> lstGop = new List<CRE.GOP>();
+            foreach (CRE exps in ListCRE) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
             double sum;
             sb.Append("____________________________________________________________________________\r\n");
             sb.AppendLine("\r\n\tOperation group : \r\n");
-            foreach (Expense.GOP g in lstGop)
+            foreach (CRE.GOP g in lstGop)
             {
                 sum = 0;
-                foreach (Expense exps in ListExpenses)
+                foreach (CRE exps in ListCRE)
                 {
                     if (exps.Gop.Equals(g))
                     {
@@ -1017,8 +1134,8 @@ namespace Droid_financial
             foreach (Refund r in Refunds)
             {
                 sb.AppendLine(String.Format(" - {0} => {1}\t\t{2}",
-                    User.GetUser(Users, r.Giver).Firstname + " " + User.GetUser(Users, r.Giver).Name,
-                    User.GetUser(Users, r.Receiver).Firstname + " " + User.GetUser(Users, r.Receiver).Name,
+                    EntityFinancialDecorator.GetUser(Entities, r.Giver).GetName(),
+                    EntityFinancialDecorator.GetUser(Entities, r.Receiver).GetName(),
                     String.Format("{0:0.00}", r.Amount))
                     );
             }
@@ -1031,15 +1148,15 @@ namespace Droid_financial
             string line;
             sb.Append("____________________________________________________________________________\r\n");
             sb.Append("\r\n\tUser details :\r\n");
-            foreach (User usr in Users)
+            foreach (EntityFinancialDecorator usr in Entities)
             {
                 sum = 0;
-                foreach (Expense exps in usr.Movements) if (exps.SubMovement) sum += exps.Amount;
-                sb.AppendLine(string.Format("\r\n\t\t . Resume for {0} {1} (total of expenses {2})\r\n", usr.Firstname, usr.Name, String.Format("{0:0.00}", sum)));
-                foreach (Expense exps in usr.Movements.OrderBy(x => x.SubMovement).ToList())
+                foreach (CRE exps in usr.Movements) if (exps.SubMovement) sum += exps.Amount;
+                sb.AppendLine(string.Format("\r\n\t\t . Resume for {0} (total of expenses {1})\r\n", usr.GetName(), String.Format("{0:0.00}", sum)));
+                foreach (CRE exps in usr.Movements.OrderBy(x => x.SubMovement).ToList())
                 {
                     line = " - ";
-                    // TODO : adapt the calcul with the new dll Droid_people
+                    // TODO : adapt the calcul with the new dll Droid.people
                     //if (exps.UserId.Contains(usr.ID) && !exps.SubMovement) line += "Paid for ";
                     //else if (exps.UserId.Contains(usr.ID)) line += "Real cost for ";
                     //else line += "Participation of ";
@@ -1137,7 +1254,7 @@ namespace Droid_financial
         private string BuildExportWebResume()
         {
             double sum = 0;
-            foreach (var v in _lstExpenses) sum += v.Amount;
+            foreach (var v in _listCRE) sum += v.Amount;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("		</style>                           ");
             sb.AppendLine("	</head>                                ");
@@ -1177,13 +1294,13 @@ namespace Droid_financial
             sb.AppendLine("<table class=\"detail_table\">");
             sb.AppendLine("<tr><th>Operation group</th><th>Amount</th></tr>");
 
-            List<Expense.GOP> lstGop = new List<Expense.GOP>();
-            foreach (Expense exps in ListExpenses) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
+            List<CRE.GOP> lstGop = new List<CRE.GOP>();
+            foreach (CRE exps in ListCRE) if (!lstGop.Contains(exps.Gop)) lstGop.Add(exps.Gop);
             double sum;
-            foreach (Expense.GOP g in lstGop)
+            foreach (CRE.GOP g in lstGop)
             {
                 sum = 0;
-                foreach (Expense exps in ListExpenses)
+                foreach (CRE exps in ListCRE)
                 {
                     if (exps.Gop.Equals(g))
                     {
@@ -1206,10 +1323,10 @@ namespace Droid_financial
             sb.AppendLine("<tr><th>Movement name</th><th>Amount</th><th>Currency</th><th>Paid by</th></tr>");
 
             string users = string.Empty;
-            foreach (Expense exps in ListExpenses)
+            foreach (CRE exps in ListCRE)
             {
                 users = string.Empty;
-                // TODO : adapt the calcul with the new dll Droid_people
+                // TODO : adapt the calcul with the new dll Droid.people
                 //foreach (var v in Users.Where(i => exps.UserId.Contains(i.ID))) users += v.Firstname + " " + v.Name.ToUpper() + " / ";
                 if (users.EndsWith(" / ")) users = users.Substring(0, users.Length - 3);
                 sb.AppendLine(string.Format(" <tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td></tr>", exps.Name, exps.Amount, exps.Currency, users));
@@ -1229,9 +1346,9 @@ namespace Droid_financial
 
             foreach (Refund r in Refunds)
             {
-                sb.AppendLine(string.Format(" <tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", 
-                    User.GetUser(Users, r.Giver).Firstname + " " + User.GetUser(Users, r.Giver).Name,
-                    User.GetUser(Users, r.Receiver).Firstname + " " + User.GetUser(Users, r.Receiver).Name,
+                sb.AppendLine(string.Format(" <tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>",
+                    EntityFinancialDecorator.GetUser(Entities, r.Giver).GetName(),
+                    EntityFinancialDecorator.GetUser(Entities, r.Receiver).GetName(),
                     String.Format("{0:0.00}", r.Amount))
                     );
             }
@@ -1249,10 +1366,10 @@ namespace Droid_financial
             DateTime start, end;
             double sum;
             string line;
-            foreach (User usr in Users)
+            foreach (EntityFinancialDecorator usr in Entities)
             {
                 sum = 0;
-                foreach (Expense exps in usr.Movements) if (exps.SubMovement) sum += exps.Amount;
+                foreach (CRE exps in usr.Movements) if (exps.SubMovement) sum += exps.Amount;
 
                 start = DateTime.MaxValue;
                 foreach (ICalendar cal in usr.Calendars) if (cal.BeginDate < start) start = cal.BeginDate;
@@ -1264,13 +1381,13 @@ namespace Droid_financial
 
 
                 sb.AppendLine("\t<table class=\"detail_table\">");
-                sb.AppendLine(string.Format("\t\t<tr><th collspan=\"3\">&nbsp;{0} [ {1} - {2} ] {3} total expenses : {4}</th></tr>", usr.Firstname, start.ToShortDateString(), end.ToShortDateString(), usr.Name, String.Format("{0:0.00}", sum)));
+                sb.AppendLine(string.Format("\t\t<tr><th collspan=\"3\">&nbsp;{0} [ {1} - {2} ] total expenses : {3}</th></tr>", usr.GetName(), start.ToShortDateString(), end.ToShortDateString(), String.Format("{0:0.00}", sum)));
                 sb.AppendLine("\t\t<tr><th>Type</th><th>Amount</th><th>Name</th><th>Description</th></tr>");
                 
-                foreach (Expense exps in usr.Movements.OrderBy(x => x.SubMovement).ToList())
+                foreach (CRE exps in usr.Movements.OrderBy(x => x.SubMovement).ToList())
                 {
                     line = "\t\t<tr><td>";
-                    // TODO : adapt the calcul with the new dll Droid_people
+                    // TODO : adapt the calcul with the new dll Droid.people
                     //if (exps.UserId.Contains(usr.ID) && !exps.SubMovement) line += "bill</td>";
                     //else if (exps.UserId.Contains(usr.ID)) line += "real expense</td>";
                     //else line += "participation</td>";

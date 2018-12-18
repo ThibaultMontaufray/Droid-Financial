@@ -2,34 +2,71 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid_Financial", "Droid_Financial.csproj", "{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools4Libraries", "..\..\Tools4Libraries\Tools4Libraries.csproj", "{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid.Financial", "Droid.Financial.csproj", "{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Droid|Any CPU = Droid|Any CPU
+		Droid|x86 = Droid|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
+		TobiProject|Any CPU = TobiProject|Any CPU
+		TobiProject|x86 = TobiProject|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|Any CPU.Build.0 = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|x86.ActiveCfg = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|x86.Build.0 = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|Any CPU.ActiveCfg = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|Any CPU.Build.0 = Debug|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|x86.ActiveCfg = Release|x86
-		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|x86.Build.0 = Release|x86
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Droid|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Droid|Any CPU.Build.0 = Debug|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Droid|x86.ActiveCfg = Debug|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Droid|x86.Build.0 = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Release|x86.ActiveCfg = Release|Any CPU
 		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.Release|x86.Build.0 = Release|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.TobiProject|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.TobiProject|Any CPU.Build.0 = Release|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.TobiProject|x86.ActiveCfg = Release|Any CPU
+		{0AF13185-9976-437D-AEBE-E4B9E5D20DC5}.TobiProject|x86.Build.0 = Release|Any CPU
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Debug|Any CPU.Build.0 = Debug|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Debug|x86.ActiveCfg = Debug|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Debug|x86.Build.0 = Debug|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Droid|Any CPU.ActiveCfg = Droid|Any CPU
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Droid|Any CPU.Build.0 = Droid|Any CPU
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Droid|x86.ActiveCfg = Droid|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Droid|x86.Build.0 = Droid|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Release|Any CPU.ActiveCfg = Release|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Release|x86.ActiveCfg = Release|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.Release|x86.Build.0 = Release|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.TobiProject|Any CPU.ActiveCfg = TobiProject|Any CPU
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.TobiProject|Any CPU.Build.0 = TobiProject|Any CPU
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.TobiProject|x86.ActiveCfg = TobiProject|x86
+		{AAD2B1BE-9B2D-455D-8DD4-64E4E84DD985}.TobiProject|x86.Build.0 = TobiProject|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|x86.ActiveCfg = Debug|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Debug|x86.Build.0 = Debug|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Droid|Any CPU.ActiveCfg = Droid|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Droid|Any CPU.Build.0 = Droid|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Droid|x86.ActiveCfg = Droid|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Droid|x86.Build.0 = Droid|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|x86.ActiveCfg = Release|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.Release|x86.Build.0 = Release|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.TobiProject|Any CPU.ActiveCfg = TobiProject|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.TobiProject|Any CPU.Build.0 = TobiProject|Any CPU
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.TobiProject|x86.ActiveCfg = TobiProject|x86
+		{92850BE1-BBCA-4D0C-A6D0-7BDC61AB0CB5}.TobiProject|x86.Build.0 = TobiProject|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

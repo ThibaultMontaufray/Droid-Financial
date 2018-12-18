@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     public class DeviseEdition : window_classic
     {
@@ -20,14 +20,14 @@ namespace Droid_financial
         private Button buttonCancel;
         private Button buttonOK;
         private Label labelName;
-        private Interface_fnc _ifn;
+        private InterfaceFinance _ifn;
         #endregion
 
         #region Properties
         #endregion
 
         #region Constructor
-        public DeviseEdition(Interface_fnc intfn)
+        public DeviseEdition(InterfaceFinance intfn)
         {
             _ifn = intfn;
             InitializeComponent();
@@ -41,9 +41,9 @@ namespace Droid_financial
         #region Methods private
         private void InitData()
         {
-            if (_ifn.CurrentProject.Changes.Count > 0)
+            if (_ifn.CurrentActivity.Changes.Count > 0)
             {
-                foreach (var item in _ifn.CurrentProject.Changes)
+                foreach (var item in _ifn.CurrentActivity.Changes)
                 {
                     if (!comboBoxDevise.Items.Contains(item.Currency1)) comboBoxDevise.Items.Add(item.Currency1);
                     if (!comboBoxDevise.Items.Contains(item.Currency2)) comboBoxDevise.Items.Add(item.Currency2);
@@ -188,12 +188,12 @@ namespace Droid_financial
             if (ControlStupidUser())
             {
                 Change chg = new Change(textBoxName.Text, comboBoxDevise.Text, double.Parse(textBoxValue.Text));
-                if (_ifn.CurrentProject.Changes.Contains(chg)) _ifn.CurrentProject.Changes.Remove(chg);
-                _ifn.CurrentProject.Changes.Add(chg);
+                if (_ifn.CurrentActivity.Changes.Contains(chg)) _ifn.CurrentActivity.Changes.Remove(chg);
+                _ifn.CurrentActivity.Changes.Add(chg);
 
                 Change chg_revert = new Change(comboBoxDevise.Text, textBoxName.Text, 1/ double.Parse(textBoxValue.Text));
-                if (_ifn.CurrentProject.Changes.Contains(chg_revert)) _ifn.CurrentProject.Changes.Remove(chg_revert);
-                _ifn.CurrentProject.Changes.Add(chg_revert);
+                if (_ifn.CurrentActivity.Changes.Contains(chg_revert)) _ifn.CurrentActivity.Changes.Remove(chg_revert);
+                _ifn.CurrentActivity.Changes.Add(chg_revert);
 
                 this.Close();
             }

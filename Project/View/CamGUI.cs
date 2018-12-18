@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 //using Touchless.Vision.Camera;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     public partial class CamGUI : Form
     {

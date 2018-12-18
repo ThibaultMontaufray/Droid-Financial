@@ -7,12 +7,12 @@ using System.Text;
 using System.Windows.Forms;
 using Tools4Libraries.Resources;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     public class PanelFinance : Panel
     {
         #region Attribute
-        private Interface_fnc _intFnc;
+        private InterfaceFinance _intFnc;
         //private List<UserPanel> _userPanels;
         private PanelGraph _panelGraph;
         private List<string> _lstGopName;
@@ -37,7 +37,7 @@ namespace Droid_financial
         {
             InitializeComponent();
         }
-        public PanelFinance(Interface_fnc intFnc)
+        public PanelFinance(InterfaceFinance intFnc)
         {
             _intFnc = intFnc;
             InitializeComponent();
@@ -89,7 +89,7 @@ namespace Droid_financial
             //this.Width = 650;
             //this.Height = 650;
             this.Dock = DockStyle.Fill;
-            if (_intFnc != null && _intFnc.CurrentProject != null)
+            if (_intFnc != null && _intFnc.CurrentActivity != null)
             {
                 LoadProjectDetail();
                 
@@ -138,7 +138,7 @@ namespace Droid_financial
 
         private void LoadProjectDetail()
         {
-            if (_intFnc.CurrentProject != null)
+            if (_intFnc.CurrentActivity != null)
             {
                 this.SuspendLayout();
                 CleanAll();

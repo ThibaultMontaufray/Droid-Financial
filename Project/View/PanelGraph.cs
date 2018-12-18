@@ -5,10 +5,9 @@ using System.Drawing.Drawing2D;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     // TOTRAIN : add the correct start color 
-
     public class PanelGraph : Panel
     {
         #region Enum

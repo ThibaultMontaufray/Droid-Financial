@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Tools4Libraries;
 
-namespace Droid_financial
+namespace Droid.financial
 {
-    public class ToolStripMenuFNC : RibbonTab
+    public class ToolStripMenuFNC : TSM
     {
         #region Attribute
         private FinancialActivity _currentProjet;
@@ -17,6 +17,7 @@ namespace Droid_financial
         private GUI _gui;
         private RibbonButton _rb_openProject;
         private RibbonButton _rb_newProject;
+        private RibbonButton _rb_welcome;
         private RibbonPanel _panelProject;
 
         private RibbonButton _rb_import;
@@ -28,7 +29,6 @@ namespace Droid_financial
         private RibbonDescriptionMenuItem _detail_export_web;
         private RibbonDescriptionMenuItem _detail_export_pdf;
         private RibbonButton _rb_print;
-        private RibbonButton _rb_add_user;
         private RibbonButton _rb_addExps;
         private RibbonButton _rb_takeBill;
         private RibbonPanel _panelTools;
@@ -43,6 +43,19 @@ namespace Droid_financial
         private RibbonTextBox _rb_projectStartDate;
         private RibbonTextBox _rb_projectEndDate;
         private RibbonPanel _panelProjectSettings;
+
+        private RibbonButton _rb_accoutnpro_specCreate;
+        private RibbonButton _rb_accoutnpro_billCreate;
+        private RibbonButton _rb_accoutnpro_actorCreate;
+        private RibbonButton _rb_accoutnpro_specManage;
+        private RibbonButton _rb_accoutnpro_billManage;
+        private RibbonButton _rb_accoutnpro_actorManage;
+        private RibbonPanel _panelAccountPro;
+
+        private RibbonPanel _panelAccountPerso;
+
+        private RibbonButton _rb_add_user;
+        private RibbonPanel _panelAccountShared;
 
         private RibbonButton _rb_switchGraphMode;
         private RibbonButton _rb_menu_tile;
@@ -111,6 +124,9 @@ namespace Droid_financial
                 BuildPanelTools();
                 BuildPanelCurrency();
                 BuildPanelView();
+                BuildPanelPro();
+                BuildPanelPerso();
+                BuildPanelShared();
                 DisableOptions();
 
                 this.Panels.Add(_panelProject);
@@ -124,6 +140,27 @@ namespace Droid_financial
             {
                 Log.Write("[ CRT : 4200 ] Cannot open financial menu.\n" + exp4200.Message);
                 //this.Dispose();
+            }
+        }
+        public void ActivateAccount(TypeAccount type)
+        {
+            switch (type)
+            {
+                case TypeAccount.FRIEND:
+                    if (this.Panels.Contains(_panelAccountPerso)) { this.Panels.Remove(_panelAccountPerso); }
+                    if (this.Panels.Contains(_panelAccountPro)) { this.Panels.Remove(_panelAccountPro); }
+                    if (!this.Panels.Contains(_panelAccountShared)) { this.Panels.Add(_panelAccountShared); }
+                    break;
+                case TypeAccount.PERSONNAL:
+                    if (this.Panels.Contains(_panelAccountPro)) { this.Panels.Remove(_panelAccountPro); }
+                    if (this.Panels.Contains(_panelAccountShared)) { this.Panels.Remove(_panelAccountShared); }
+                    if (!this.Panels.Contains(_panelAccountPerso)) { this.Panels.Add(_panelAccountPerso); }
+                    break;
+                case TypeAccount.PROFESSIONNAL:
+                    if (this.Panels.Contains(_panelAccountPerso)) { this.Panels.Remove(_panelAccountPerso); }
+                    if (this.Panels.Contains(_panelAccountShared)) { this.Panels.Remove(_panelAccountShared); }
+                    if (!this.Panels.Contains(_panelAccountPro)) { this.Panels.Add(_panelAccountPro); }
+                    break;
             }
         }
         public void OnAction(EventArgs e)
@@ -158,11 +195,12 @@ namespace Droid_financial
         {
             if (pj != null)
             {
+                ActivateAccount(pj.TypeAcc);
                 _currentProjet = pj;
                 _rb_cb_change.DropDownItems.Clear();
                 _rb_cb_currency.DropDownItems.Clear();
                 List<string> ls = new List<string>();
-                foreach (Expense item in pj.ListExpenses)
+                foreach (CRE item in pj.ListCRE)
                 {
                     if (!ls.Contains(item.Currency.ToString())) ls.Add(item.Currency.ToString());
                 }
@@ -211,7 +249,7 @@ namespace Droid_financial
 
         public void EnablePresentation()
         {
-            _detail_presentation.Text = "Disable financial module presentation                       ";
+            _detail_presentation.Text = "Disable module presentation                       ";
             _detail_presentation.Image = Tools4Libraries.Resources.ResourceIconSet32Default.directory_listing_checked;
         }
         public void EnableUserList()
@@ -237,7 +275,7 @@ namespace Droid_financial
 
         public void DisablePresentation()
         {
-            _detail_presentation.Text = "Enable financial module presentation                       ";
+            _detail_presentation.Text = "Enable mdoule presentation                       ";
             _detail_presentation.Image = Tools4Libraries.Resources.ResourceIconSet32Default.directory_listing_unchecked;
         }
         public void DisableUserList()
@@ -275,10 +313,79 @@ namespace Droid_financial
             _rb_newProject.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.folder_add));
             _rb_newProject.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.folder_add));
 
+            _rb_welcome = new RibbonButton("Overview");
+            _rb_welcome.Click += new EventHandler(rb_welcome_Click);
+            _rb_welcome.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.application_home));
+            _rb_welcome.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.application_home));
+
             _panelProject = new RibbonPanel();
             _panelProject.Text = "Project";
             _panelProject.Items.Add(_rb_newProject);
             _panelProject.Items.Add(_rb_openProject);
+            _panelProject.Items.Add(_rb_welcome);
+        }
+        private void BuildPanelPro()
+        {
+            _rb_accoutnpro_specCreate = new RibbonButton("New specification");
+            _rb_accoutnpro_specCreate.Click += new EventHandler(_rb_accoutnpro_spec_Click);
+            _rb_accoutnpro_specCreate.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.document_mark_as_final));
+            _rb_accoutnpro_specCreate.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.document_mark_as_final));
+            _rb_accoutnpro_specCreate.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _rb_accoutnpro_billCreate = new RibbonButton("New bill");
+            _rb_accoutnpro_billCreate.Click += new EventHandler(_rb_accoutnpro_bill_Click);
+            _rb_accoutnpro_billCreate.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.document_valid));
+            _rb_accoutnpro_billCreate.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.document_valid));
+            _rb_accoutnpro_billCreate.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _rb_accoutnpro_actorCreate = new RibbonButton("Add client");
+            _rb_accoutnpro_actorCreate.Click += new EventHandler(_rb_accoutnpro_add_client_Click);
+            _rb_accoutnpro_actorCreate.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.client_account_template));
+            _rb_accoutnpro_actorCreate.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.client_account_template));
+            _rb_accoutnpro_actorCreate.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _rb_accoutnpro_specManage = new RibbonButton("Manage specifications");
+            _rb_accoutnpro_specManage.Click += new EventHandler(_rb_accoutnpro_spec_manage_Click);
+            _rb_accoutnpro_specManage.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.page_white_magnify));
+            _rb_accoutnpro_specManage.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.page_white_magnify));
+            _rb_accoutnpro_specManage.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _rb_accoutnpro_billManage = new RibbonButton("Manage bills");
+            _rb_accoutnpro_billManage.Click += new EventHandler(_rb_accoutnpro_bill_manage_Click);
+            _rb_accoutnpro_billManage.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.document_inspect));
+            _rb_accoutnpro_billManage.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.document_inspect));
+            _rb_accoutnpro_billManage.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _rb_accoutnpro_actorManage = new RibbonButton("Manage people");
+            _rb_accoutnpro_actorManage.Click += new EventHandler(_rb_accoutnpro_people_manage_Click);
+            _rb_accoutnpro_actorManage.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.report_user));
+            _rb_accoutnpro_actorManage.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.report_user));
+            _rb_accoutnpro_actorManage.MaxSizeMode = RibbonElementSizeMode.Medium;
+
+            _panelAccountPro = new RibbonPanel();
+            _panelAccountPro.Items.Add(_rb_accoutnpro_actorCreate);
+            _panelAccountPro.Items.Add(_rb_accoutnpro_specCreate);
+            _panelAccountPro.Items.Add(_rb_accoutnpro_billCreate);
+            _panelAccountPro.Items.Add(_rb_accoutnpro_actorManage);
+            _panelAccountPro.Items.Add(_rb_accoutnpro_specManage);
+            _panelAccountPro.Items.Add(_rb_accoutnpro_billManage);
+            _panelAccountPro.Text = "Professional";
+        }
+        private void BuildPanelPerso()
+        {
+            _panelAccountPerso = new RibbonPanel();
+            _panelAccountPerso.Text = "Personal";
+        }
+        private void BuildPanelShared()
+        {
+            _rb_add_user = new RibbonButton("Add owner");
+            _rb_add_user.Click += new EventHandler(rb_addUser_Click);
+            _rb_add_user.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.user_add));
+            _rb_add_user.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.user_add));
+            
+            _panelAccountShared = new RibbonPanel();
+            _panelAccountShared.Items.Add(_rb_add_user);
+            _panelAccountShared.Text = "Shared";
         }
         private void BuildPanelTools()
         {
@@ -341,11 +448,6 @@ namespace Droid_financial
             _rb_print.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.printer));
             _rb_print.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.printer));
 
-            _rb_add_user = new RibbonButton("Add owner");
-            _rb_add_user.Click += new EventHandler(rb_addUser_Click);
-            _rb_add_user.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.user_add));
-            _rb_add_user.Image = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet32Default.user_add));
-
             _rb_balance = new RibbonButton("Balance");
             _rb_balance.Click += new EventHandler(rb_balance_Click);
             _rb_balance.SmallImage = ((System.Drawing.Image)(Tools4Libraries.Resources.ResourceIconSet16Default.small_business));
@@ -363,7 +465,6 @@ namespace Droid_financial
 
             _panelTools = new RibbonPanel();
             _panelTools.Text = "Tools";
-            _panelTools.Items.Add(_rb_add_user);
             _panelTools.Items.Add(_rb_takeBill);
             _panelTools.Items.Add(_rb_addExps);
             _panelTools.Items.Add(_rb_balance);
@@ -495,7 +596,43 @@ namespace Droid_financial
         }
         #endregion
 
-        #region Event
+        #region 
+        private void _rb_accoutnpro_add_client_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("addclient");
+            OnAction(action);
+        }
+        private void _rb_accoutnpro_spec_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("newspec");
+            OnAction(action);
+        }
+        private void _rb_accoutnpro_bill_manage_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("managebill");
+            OnAction(action);
+        }
+        private void _rb_accoutnpro_spec_manage_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("managespec");
+            OnAction(action);
+        }
+        private void _rb_accoutnpro_people_manage_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("managepeople");
+            OnAction(action);
+        }
+        private void _rb_accoutnpro_bill_Click(object sender, EventArgs e)
+        {
+            _rb_openProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("newbill");
+            OnAction(action);
+        }
         private void rb_openProject_Click(object sender, EventArgs e)
         {
             _rb_openProject.Checked = false;
@@ -506,6 +643,12 @@ namespace Droid_financial
         {
             _rb_newProject.Checked = false;
             ToolBarEventArgs action = new ToolBarEventArgs("newProject");
+            OnAction(action);
+        }
+        private void rb_welcome_Click(object sender, EventArgs e)
+        {
+            _rb_newProject.Checked = false;
+            ToolBarEventArgs action = new ToolBarEventArgs("welcome");
             OnAction(action);
         }
         private void rb_addUser_Click(object sender, EventArgs e)

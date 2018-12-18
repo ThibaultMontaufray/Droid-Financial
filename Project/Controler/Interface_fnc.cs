@@ -4,28 +4,48 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text;
 using Tools4Libraries;
+using System.Drawing;
+using Droid.People;
+using System.Xml.Serialization;
+using Droid.financial.View.Screen;
+using Droid.financial.View;
 
-namespace Droid_financial
+namespace Droid.financial
 {
     /// <summary>
     /// Interface for Tobi Assistant application : take care, some french word here to allow Tobi to speak with natural langage.
-    /// </summary>            
-    public delegate void InterfaceEventHandler();
-    public class Interface_fnc : GPInterface
+    /// </summary>       
+    [Serializable]
+    [XmlRoot("financial")]
+    public class InterfaceFinance : GPInterface
     {
         #region Attributes
-        public event InterfaceEventHandler SheetDisplayRequested;
+        public readonly string WORKING_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Servodroid\Droid-Finances\";
+        public new event InterfaceEventHandler SheetDisplayRequested;
 
-        public readonly int TOP_OFFSET = 150;
-        private ToolStripMenuFNC _tsm;
+        public readonly int TOP_OFFSET = 50;
 		private bool _openned;
         //private PanelFinance _panfin;
-        private List<FinancialActivity> _activities;
+        //private List<FinancialActivity> _activities;
         private FinancialActivity _currentActivity;
+        private EntityFinancialDecorator entityFinancialDecorator;
+        private Specification _cuurrentSpecification;
+
         private bool _viewTable = true;
         private string _pathFile;
+        private new ToolStripMenuFNC _tsm;
 
-        private UserControlCustom _viewWelcome;
+        private ViewSpecifications _viewSpecifications;
+        private ViewCompanies _viewCompanies;
+        private ViewCompany _viewCompany;
+        private ViewBillDetails _viewBillDetail;
+        private ViewBills _viewBillManage;
+        private ViewBillPreview _viewBillPreview;
+        private ViewSpecification _viewNewSpecification;
+        private ViewWelcome _viewWelcome;
+        private ViewActivityDetail _viewActivityDetail;
+        private List<Person> _entities;
+        private List<FinancialActivity> _activities;
         #endregion
 
         #region Properties
@@ -34,19 +54,18 @@ namespace Droid_financial
 			get { return _tsm; }
 			set { _tsm = value as ToolStripMenuFNC; }
 		}
-        public Panel Sheet
-        {
-            get { return _sheet; }
-            set { _sheet = value; }
-        }
-		public override bool Openned
+   		public override bool Openned
 		{
 			get { return _openned; }
 		}
-        public FinancialActivity CurrentProject
+        public FinancialActivity CurrentActivity
         {
             get { return _currentActivity; }
-            set { _currentActivity = value; }
+            set
+            {
+                _currentActivity = value;
+                RefreshAccountDetails();
+            }
         }
         public bool ViewTable
         {
@@ -58,12 +77,38 @@ namespace Droid_financial
             get { return _pathFile; }
             set { _pathFile = value; }
         }
-		#endregion
-		
-		#region Constructor
-        public Interface_fnc(string pathActivity = "")
+        public List<Person> Entities
         {
-            _activities = new List<FinancialActivity>();
+            get
+            {
+                if (_entities == null) { _entities = new List<Person>(); }
+                return _entities;
+            }
+            set { _entities = value; }
+        }
+        public List<FinancialActivity> Activities
+        {
+            get { return _activities; }
+            set { _activities = value; }
+        }
+        public Specification CurrentSpecification
+        {
+            get { return _cuurrentSpecification; }
+            set { _cuurrentSpecification = value; }
+        }
+        public EntityFinancialDecorator CurrentEntity
+        {
+            get { return entityFinancialDecorator; }
+            set { entityFinancialDecorator = value; }
+        }
+        #endregion
+
+        #region Constructor
+        public InterfaceFinance(string pathActivity = "")
+        {
+            //ParserCreditAgricole.Process(@"D:\Download\CA20180202_1550.CSV");
+            
+            //_activities = new List<FinancialActivity>();
             _pathFile = pathActivity;
             BuildToolBar();
             Init();
@@ -126,8 +171,31 @@ namespace Droid_financial
 			{
 				
 			}
-		}
-		public override bool Save()
+        }
+        public override bool Save()
+        {
+            if (_currentActivity != null)
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = "Financial files (*.fnc)|*.fnc|All files (*.*)|*.*";
+                    if (!string.IsNullOrEmpty(_currentActivity.PathActivity))
+                    {
+                        _currentActivity.Name = _currentActivity.Name;
+                        _currentActivity.Save(_currentActivity.PathActivity);
+                        return true;
+                    }
+                    else if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        _currentActivity.Name = (new FileInfo(sfd.FileName).Name);
+                        _currentActivity.Save(sfd.FileName);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool SaveAs()
         {
             if (_currentActivity != null)
             {
@@ -147,9 +215,9 @@ namespace Droid_financial
                     }
                 }
             }
-			return false;
-		}
-		public override void ZoomIn()
+            return false;
+        }
+        public override void ZoomIn()
 		{
 			
 		}
@@ -169,27 +237,42 @@ namespace Droid_financial
 		{
 			
 		}
-		public override void Resize()
-        {
-            foreach (Control ctrl in _sheet.Controls)
-            {
-                if (ctrl.Name.Equals("CurrentView"))
-                {
-                    ctrl.Left = (_sheet.Width / 2) - (ctrl.Width / 2);
-                }
-            }
-        }
-        public override void GlobalAction(object sender, EventArgs e)
-        {
-            ToolBarEventArgs tbea = e as ToolBarEventArgs;
-            string action = tbea.EventText;
-            GoAction(action);
-        }
 
-        public void GoAction(string action)
+        public override void GoAction(string action)
         {
 			switch (action.ToLower())
             {
+                case "deletecompany":
+                    break;
+                case "editcompany":
+                    break;
+                case "welcome":
+                    LaunchViewWelcome();
+                    break;
+                case "addclient":
+                    LaunchAddClient();
+                    break;
+                case "newbill":
+                    LaunchNewBill();
+                    break;
+                case "managebill":
+                    LaunchManageBill();
+                    break;
+                case "managespec":
+                    LaunchManageSpec();
+                    break;
+                case "managepeople":
+                    LaunchManagePeople();
+                    break;
+                case "editbill":
+                    LaunchEditBill();
+                    break;
+                case "printbill":
+                    LaunchPrintBill();
+                    break;
+                case "newspec":
+                    LaunchNewSpecification();
+                    break;
                 case "adddevise":
                     LaunchAddDevise();
                     break;
@@ -309,15 +392,15 @@ namespace Droid_financial
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Expense exps in _currentActivity.ListExpenses)
+                    foreach (CRE exps in _currentActivity.ListCRE)
                     {
                         if (exps.Id == form.Movement.Id)
                         {
-                            _currentActivity.ListExpenses.Remove(exps);
+                            _currentActivity.ListCRE.Remove(exps);
                             break;
                         }
                     }
-                    _currentActivity.ListExpenses.Add(form.Movement);
+                    _currentActivity.ListCRE.Add(form.Movement);
                     RefreshPanel();
                 }
             }
@@ -328,15 +411,15 @@ namespace Droid_financial
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Expense exps in _currentActivity.ListExpenses)
+                    foreach (CRE exps in _currentActivity.ListCRE)
                     {
                         if (exps.Id == form.Movement.Id)
                         {
-                            _currentActivity.ListExpenses.Remove(exps);
+                            _currentActivity.ListCRE.Remove(exps);
                             break;
                         }
                     }
-                    _currentActivity.ListExpenses.Add(form.Movement);
+                    _currentActivity.ListCRE.Add(form.Movement);
                     RefreshPanel();
                 }
             }
@@ -347,11 +430,11 @@ namespace Droid_financial
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Expense exps in _currentActivity.ListExpenses)
+                    foreach (CRE exps in _currentActivity.ListCRE)
                     {
                         if (exps.Id == form.Movement.Id)
                         {
-                            _currentActivity.ListExpenses.Remove(exps);
+                            _currentActivity.ListCRE.Remove(exps);
                             break;
                         }
                     }
@@ -367,12 +450,12 @@ namespace Droid_financial
             DeviseEdition de = new DeviseEdition(this);
             de.ShowDialog();
             Tsm.UpdateProjectDetails(_currentActivity);
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchProjectUpdated()
         {
             DateTime dt = DateTime.MinValue;
-            foreach (User user in _currentActivity.Users)
+            foreach (EntityFinancialDecorator user in _currentActivity.Entities)
             {
                 foreach (var item in user.Calendars)
                 {
@@ -390,23 +473,23 @@ namespace Droid_financial
             if (dt != DateTime.MinValue) _currentActivity.EndDate = dt;
             else _tsm.ProjectEndDate.TextBoxText = _currentActivity.EndDate.ToShortDateString();
             dt = DateTime.MinValue;
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchBalance()
         {
             _currentActivity.Balance();
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchWinUpdate()
         {
             //_panfin.Refresh();
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchSwitchGraph()
         {
             //if (_panfin.PanelGraphics.GraphMode == PanelGraph.GRAPHMODE.PIE) _panfin.SetGraphMode(PanelGraph.GRAPHMODE.BAR);
             //else _panfin.SetGraphMode(PanelGraph.GRAPHMODE.PIE);
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchNewProject()
         {
@@ -415,12 +498,27 @@ namespace Droid_financial
             Tsm.EnableGOP();
             Tsm.EnableExpsList();
             Tsm.EnableReconciliation();
+            
+            _currentActivity = new FinancialActivity(this.WORKING_DIRECTORY);
+            _viewActivityDetail = new ViewActivityDetail();
+            _viewActivityDetail.Activity = _currentActivity;
+            this.Activities.Add(_viewActivityDetail.Activity);
+            this.CurrentActivity = _viewActivityDetail.Activity;
+            _viewActivityDetail.ActivityDetailUpdated += _viewActivityDetail_ActivityDetailUpdated;
 
-            _currentActivity = new FinancialActivity();
-            _tsm.UpdateProjectDetails(_currentActivity);
-            _tsm.EnableOptions();
-            RefreshPanel();
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            _sheet.Controls.Clear();
+
+            _viewActivityDetail.Top = TOP_OFFSET;
+            _viewActivityDetail.RefreshData();
+            _viewActivityDetail.Left = (_sheet.Width / 2) - (_viewActivityDetail.Width / 2);
+            _viewActivityDetail.ChangeLanguage();
+
+            _sheet.Controls.Add(_viewActivityDetail);
+
+            //_tsm.UpdateProjectDetails(_currentActivity);
+            //_tsm.EnableOptions();
+            //RefreshPanel();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchOpenProject()
         {
@@ -430,18 +528,19 @@ namespace Droid_financial
             {
                 OpenProject(ofd.FileName);
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            LaunchViewWelcome();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchLoadProject()
         {
             OpenProject(_pathFile);
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchAddUser()
         {
-            // TODO : manage it with the new dll Droid_people
+            // TODO : manage it with the new dll Droid.people
             //EditUser(null);
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchAddMovement()
         {
@@ -451,14 +550,14 @@ namespace Droid_financial
         {
             _viewTable = !_viewTable;
             RefreshPanel();
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchCurrencyModif()
         {
-            _currentActivity.CurrencyProject = Expense.GetCurrency(_tsm.Currencies.SelectedItem.Text);
+            _currentActivity.CurrencyProject = CRE.GetCurrency(_tsm.Currencies.SelectedItem.Text);
             _currentActivity.Balance();
             RefreshPanel();
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchValueChangeModif()
         {
@@ -480,7 +579,7 @@ namespace Droid_financial
                 }
                 _currentActivity.Balance();
                 RefreshPanel();
-                if (SheetDisplayRequested != null) SheetDisplayRequested();
+                SheetDisplayRequested?.Invoke(null);
             }
         }
         private void LaunchChangeModif()
@@ -498,7 +597,7 @@ namespace Droid_financial
                         break;
                     }
                 }
-                if (SheetDisplayRequested != null) SheetDisplayRequested();
+                SheetDisplayRequested?.Invoke(null);
             }
         }
         private void LaunchImport()
@@ -507,10 +606,11 @@ namespace Droid_financial
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    _currentActivity.ListExpenses.AddRange(Expense.ImportExps(ofd.FileName));
+                    CRE.ImportExps(ofd.FileName, this);
+                    _viewWelcome.RefreshData();
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchExportXml()
         {
@@ -528,7 +628,7 @@ namespace Droid_financial
                     }
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchExportPdf()
         {
@@ -541,7 +641,7 @@ namespace Droid_financial
                     _currentActivity.ExportPDF(sfd.FileName);
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchExportWeb()
         {
@@ -559,7 +659,7 @@ namespace Droid_financial
                     }
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchExportTxt()
         {
@@ -577,7 +677,7 @@ namespace Droid_financial
                     }
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchExportCsv()
         {
@@ -595,7 +695,7 @@ namespace Droid_financial
                     }
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchTakeBill()
         {
@@ -606,39 +706,132 @@ namespace Droid_financial
                     EditExps(myCamGUi.PicturePath);
                 }
             }
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            SheetDisplayRequested?.Invoke(null);
         }
         private void LaunchViewWelcome()
         {
+            if (_viewWelcome == null) { _viewWelcome = new ViewWelcome(this); }
+            LaunchSheet(_viewWelcome, fullSize: true);
+        }
+
+        private void LaunchAddClient()
+        {
             _sheet.Controls.Clear();
 
-            _viewWelcome.Top = TOP_OFFSET;
-            _viewWelcome.RefreshData();
-            _viewWelcome.Left = (_sheet.Width / 2) - (_viewWelcome.Width / 2);
-            _viewWelcome.ChangeLanguage();
-            _sheet.Controls.Add(_viewWelcome);
-            if (SheetDisplayRequested != null) SheetDisplayRequested();
+            if (_viewCompany == null)
+            {
+                _viewCompany = new ViewCompany();
+                _viewCompany.OnCancel += EventRequestWelcomeScreen;
+                _viewCompany.OnSave += EventRequestWelcomeScreen;
+            }
+            Company c = new Company();
+            _viewCompany.Company = c;
+            LaunchSheet(_viewCompany, offset: 250);
+        }
+        private void LaunchNewBill()
+        {
+            if (_viewBillDetail == null)
+            {
+                _viewBillDetail = new ViewBillDetails(this);
+                _viewBillDetail.OnCancel += EventRequestWelcomeScreen;
+                _viewBillDetail.OnSave += _viewOnSave;
+            }
+            _viewBillDetail.Bill = new Bill();
+            _viewBillDetail.Bill.Id = _currentActivity.BillNexId;
+            LaunchSheet(_viewBillDetail, offset:250);
+        }
+        private void LaunchEditBill()
+        {
+            if (_viewBillDetail == null)
+            {
+                _viewBillDetail = new ViewBillDetails(this);
+                _viewBillDetail.OnCancel += EventRequestWelcomeScreen;
+                _viewBillDetail.OnSave += _viewOnSave;
+            }
+            _viewBillDetail.Bill = _currentActivity?.CurrentBill;
+            LaunchSheet(_viewBillDetail, offset: 250);
+        }
+        private void LaunchPrintBill()
+        {
+            if (_viewBillPreview == null)
+            {
+                _viewBillPreview = new ViewBillPreview();
+            }
+            _viewBillPreview.Bill = _currentActivity?.CurrentBill;
+            LaunchSheet(_viewBillPreview, offset: 250);
+        }
+        private void LaunchManageBill()
+        {
+            if (_viewBillManage == null)
+            {
+                _viewBillManage = new ViewBills(this);
+            }
+            LaunchSheet(_viewBillManage, offset: 250);
+        }
+        private void LaunchManageSpec()
+        {
+            if (_viewBillManage == null)
+            {
+                _viewSpecifications = new ViewSpecifications();
+            }
+            _viewSpecifications.LoadData(_currentActivity.Specifications);
+            LaunchSheet(_viewSpecifications, offset: 250);
+        }
+        private void LaunchManagePeople()
+        {
+            if (_viewCompanies == null)
+            {
+                _viewCompanies = new ViewCompanies(this);
+                _viewCompanies.OnEdit += _viewCompanies_OnEdit;
+                _viewCompanies.OnDelete += _viewCompanies_OnDelete;
+            }
+            _viewCompanies.LoadData(_currentActivity.Entities);
+            LaunchSheet(_viewCompanies, offset: 250);
+        }
+        private void LaunchNewSpecification()
+        {
+            _sheet.Controls.Clear();
+
+            if (_viewNewSpecification == null)
+            {
+                _viewNewSpecification = new ViewSpecification();
+                _viewNewSpecification.OnCancel += EventRequestWelcomeScreen;
+                _viewNewSpecification.OnSave += _viewOnSave;
+            }
+            LaunchSheet(_viewNewSpecification, offset: 250);
         }
         #endregion
 
         #region Methods	private
         private void OpenProject(string fileName = "")
         {
-            if (!string.IsNullOrEmpty(fileName)) { _pathFile = fileName; }
+            _pathFile = fileName;
             Tsm.DisablePresentation();
             Tsm.EnableUserList();
             Tsm.EnableGOP();
             Tsm.EnableExpsList();
             Tsm.EnableReconciliation();
             
+            if (string.IsNullOrEmpty(_pathFile))
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "Financial Files (.fnc)|*.fnc|All Files (*.*)|*.*";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    _pathFile = ofd.FileName;
+                }
+            }
             if (!string.IsNullOrEmpty(_pathFile))
             {
-                _activities.Clear();
-                foreach (string dir in Directory.GetDirectories(_pathFile))
-                {
-                    _activities.Add(new FinancialActivity(dir));
-                }
-                _currentActivity = _activities.Count > 0 ? _activities[0] : null;
+                //_activities.Clear();
+                //FileInfo fi = new FileInfo(_pathFile);
+                //foreach (string dir in Directory.GetDirectories(fi.DirectoryName))
+                //{
+                //    _activities.Add(new FinancialActivity(dir));
+                //}
+                _currentActivity = new FinancialActivity(_pathFile);
+                _activities.Add(_currentActivity);
+                //_currentActivity = _activities.Count > 0 ? _activities[0] : null;
                 _tsm.EnableOptions();
                 RefreshPanel();
                 _tsm.UpdateProjectDetails(_currentActivity);
@@ -651,9 +844,13 @@ namespace Droid_financial
         }
         private void Init()
         {
-            OpenProject();
+            if (!Directory.Exists(WORKING_DIRECTORY)) { Directory.CreateDirectory(WORKING_DIRECTORY); }
 
-            _sheet = new Panel();
+            _activities = new List<FinancialActivity>();
+            _entities = new List<Person>();
+            //if (!string.IsNullOrEmpty(_pathFile)) { OpenProject(); }
+
+            _sheet = new PanelScrollableCustom();
             _sheet.Name = "SheetFinance";
             _sheet.BackColor = System.Drawing.Color.DimGray;
             _sheet.Dock = DockStyle.Fill;
@@ -678,12 +875,44 @@ namespace Droid_financial
             //_panfin.Name = "CurrentView";
             //_sheet.Controls.Add(_panfin);
         }
+        private void RefreshAccountDetails()
+        {
+            _tsm.UpdateProjectDetails(_currentActivity);
+        }
         #endregion
 
         #region Event
         private void _sheet_Resize(object sender, EventArgs e)
         {
             Resize();
+        }
+        private void _viewActivityDetail_ActivityDetailUpdated(object o)
+        {
+            Save();
+            LaunchViewWelcome();
+
+            Tsm.DisablePresentation();
+            Tsm.EnableUserList();
+            Tsm.EnableGOP();
+            Tsm.EnableExpsList();
+            Tsm.EnableReconciliation();
+        }
+        private void EventRequestWelcomeScreen(object o)
+        {
+            LaunchViewWelcome();
+        }
+        private void _viewOnSave(object o)
+        {
+            Save();
+            LaunchViewWelcome();
+        }
+        private void _viewCompanies_OnDelete(object sender, EventArgs e)
+        {
+            GoAction("deletecompany");
+        }
+        private void _viewCompanies_OnEdit(object sender, EventArgs e)
+        {
+            GoAction("editcompany");
         }
         #endregion
     }
